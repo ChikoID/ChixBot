@@ -11,6 +11,7 @@ module.exports = async (client) => {
     if (!client.commands) {
         client.commands = new Map();
     }
+    const uniqueCommands = new Set();
 
     if (!fs.existsSync(commandsPath)) {
         console.log("Commands folder tidak ditemukan, membuat folder...");
@@ -37,6 +38,7 @@ module.exports = async (client) => {
                     }
 
                     client.commands.set(command.name, command);
+                    uniqueCommands.add(command.name);
 
                     if (command.aliases && Array.isArray(command.aliases)) {
                         command.aliases.forEach((alias) => {
@@ -58,5 +60,5 @@ module.exports = async (client) => {
         return console.log("Tidak ada command yang berhasil dimuat");
     }
 
-    console.log(`${client.commands.size} commands loaded successfully!`);
+    console.log(`${uniqueCommands.size} commands loaded successfully!`);
 };

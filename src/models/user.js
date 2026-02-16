@@ -1,23 +1,13 @@
 const { runAsync, getAsync, allAsync } = require("../shared/configuration/database");
 
-class UserModel {
-    static async create(phone, balance = 0) {
-        await runAsync("INSERT INTO users (phone, balance) VALUES (?, ?)", [phone, balance]);
-        return this.getByPhone(phone);
+class User {
+    static async create(phoneId) {
+        await runAsync("INSERT INTO users (phoneId) VALUES (?)", [phoneId]);
+        return this.getByPhone(phoneId);
     }
 
-    static getByPhone(phone) {
-        return getAsync("SELECT * FROM users WHERE phone = ?", [phone]);
-    }
-
-    static async setBalance(phone, balance) {
-        await runAsync("UPDATE users SET balance = ? WHERE phone = ?", [balance, phone]);
-        return this.getByPhone(phone);
-    }
-
-    static async addBalance(phone, amount) {
-        await runAsync("UPDATE users SET balance = balance + ? WHERE phone = ?", [amount, phone]);
-        return this.getByPhone(phone);
+    static getByPhone(phoneId) {
+        return getAsync("SELECT * FROM users WHERE phoneId = ?", [phoneId]);
     }
 
     static list() {
@@ -25,4 +15,4 @@ class UserModel {
     }
 }
 
-module.exports = UserModel;
+module.exports = User;

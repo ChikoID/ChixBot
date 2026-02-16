@@ -3,9 +3,9 @@ module.exports = {
     async up({ runAsync }) {
         await runAsync(`CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            phone TEXT UNIQUE,
-            balance INTEGER DEFAULT 0,
-            created_at TEXT DEFAULT (datetime('now'))
+            phoneId TEXT UNIQUE,
+            created_at TEXT DEFAULT (datetime('now')),
+            updated_at TEXT DEFAULT (datetime('now'))
             )`);
     },
     async down({ runAsync }) {
