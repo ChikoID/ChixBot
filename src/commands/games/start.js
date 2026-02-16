@@ -15,7 +15,7 @@ module.exports = {
         
         if(await User.getByPhone(userId)) return await message.reply("⚠️ Kamu sudah memulai permainan sebelumnya!");
         
-        User.create(userId, 100);
+        User.create(userId);
         await message.reply("🎮 Permainan dimulai! Selamat bermain dengan ChixBot!");
     },
 };
