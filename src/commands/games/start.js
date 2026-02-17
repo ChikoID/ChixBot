@@ -10,12 +10,12 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        if(message.fromMe) return;
         const userId = message.from.split("@")[0];
         
-        if(await User.getByPhone(userId)) return await message.reply("⚠️ Kamu sudah memulai permainan sebelumnya!");
+        const existingUser = await User.getByPhone(userId);
+        if(existingUser) return await message.reply("⚠️ Kamu sudah memulai permainan sebelumnya!");
         
-        User.create(userId);
+        await User.create(userId);
         await message.reply("🎮 Permainan dimulai! Selamat bermain dengan ChixBot!");
     },
 };

@@ -2,16 +2,29 @@ const { runAsync, getAsync, allAsync } = require("../shared/configuration/databa
 
 class User {
     static async create(phoneId) {
-        await runAsync("INSERT INTO users (phoneId) VALUES (?)", [phoneId]);
-        return this.getByPhone(phoneId);
+        const now = Date.now();
+        await runAsync("INSERT INTO users (phoneId, last_update) VALUES (?, ?)", [phoneId, now]);
+        return await this.getByPhone(phoneId);
     }
 
-    static getByPhone(phoneId) {
-        return getAsync("SELECT * FROM users WHERE phoneId = ?", [phoneId]);
+    static async getByPhone(phoneId) {
+        return await getAsync("SELECT * FROM users WHERE phoneId = ?", [phoneId]);
     }
 
-    static list() {
+    static async getById(id) {
+        return await getAsync("SELECT * FROM users WHERE id = ?", [id]);
+    }
+
+    static async list() {
         return allAsync("SELECT * FROM users ORDER BY id ASC");
+    }
+
+    static async update(id, data) {
+        const fields = Object.keys(data)
+            .map((key) => `${key} = ?`)
+            .join(", ");
+        const values = Object.values(data);
+        return await runAsync(`UPDATE users SET ${fields}, updated_at = datetime('now') WHERE id = ?`, [...values, id]);
     }
 }
 

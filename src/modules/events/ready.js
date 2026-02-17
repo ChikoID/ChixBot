@@ -1,3 +1,7 @@
+const { seedItems } = require("../../database/seeders/itemSeeder");
+const { runMigrations } = require("../../shared/configuration/database");
+const { startIdleUpdater } = require("../systems/idleTimer");
+
 module.exports = {
     name: "ready",
     once: true,
@@ -5,8 +9,6 @@ module.exports = {
      * @param {import("whatsapp-web.js").Client} client
      */
     async execute(client) {
-        const { runMigrations } = require("../../shared/configuration/database");
-
         try {
             const executed = await runMigrations();
             if (executed.length > 0) {
@@ -16,6 +18,8 @@ module.exports = {
             console.error("Migration error:", error);
         }
 
+        await seedItems();
+        startIdleUpdater();
         console.log(`Bot is ready!\nLogged in as: ${client.info.pushname}`);
     },
 };
