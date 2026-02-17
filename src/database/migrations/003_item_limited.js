@@ -3,6 +3,7 @@ module.exports = {
     async up({ runAsync }) {
         await runAsync(`CREATE TABLE IF NOT EXISTS items_limited (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            unique_id TEXT UNIQUE,
             name TEXT,
             price INTEGER,
             quantity INTEGER DEFAULT 0,

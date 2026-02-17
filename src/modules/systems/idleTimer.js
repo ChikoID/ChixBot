@@ -26,7 +26,7 @@ async function startIdleUpdater() {
         } catch (error) {
             console.error("Error in idle updater:", error);
         }
-    }, 5000);
+    }, process.env.IDLE_INTERVAL || 10000);
 }
 
 function stopIdleUpdater() {

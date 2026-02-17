@@ -8,7 +8,9 @@ class StorageEstimator {
      * @returns {Promise<Object>} { minutesToFull, formattedTime, isFull }
      */
     static async calculateTimeToFull(currentStorage, maxStorage) {
-        const spaceLeft = maxStorage - currentStorage;
+        const safeCurrentStorage = Number.isFinite(Number(currentStorage)) ? Number(currentStorage) : 0;
+        const safeMaxStorage = Number.isFinite(Number(maxStorage)) ? Number(maxStorage) : 0;
+        const spaceLeft = safeMaxStorage - safeCurrentStorage;
 
         if (spaceLeft <= 0) {
             return {
@@ -19,9 +21,12 @@ class StorageEstimator {
         }
 
         const items = await Item.list();
-        const totalDropRate = items.reduce((sum, item) => sum + item.drop_rate, 0);
+        const idleItems = items.filter((i) => i.is_idle_item === 1);
+        const rawEfficiency = Number(process.env.IDLE_EFFICIENCY || 0.35);
+        const efficiency = Number.isFinite(rawEfficiency) && rawEfficiency > 0 ? rawEfficiency : 0;
+        const productionPerMinute = idleItems.reduce((sum, item) => sum + item.drop_rate * efficiency, 0);
 
-        if (totalDropRate === 0) {
+        if (productionPerMinute <= 0) {
             return {
                 minutesToFull: Infinity,
                 formattedTime: "Tidak ada produksi",
@@ -29,7 +34,7 @@ class StorageEstimator {
             };
         }
 
-        const minutesToFull = spaceLeft / totalDropRate;
+        const minutesToFull = spaceLeft / productionPerMinute;
 
         return {
             minutesToFull,
@@ -75,7 +80,11 @@ class StorageEstimator {
      * @returns {number} Jumlah item yang diproduksi
      */
     static calculateProduction(minutes, dropRate) {
-        return Math.floor(minutes * dropRate);
+        const safeMinutes = Number.isFinite(Number(minutes)) ? Number(minutes) : 0;
+        const safeDropRate = Number.isFinite(Number(dropRate)) ? Number(dropRate) : 0;
+        const rawEfficiency = Number(process.env.IDLE_EFFICIENCY || 0.35);
+        const efficiency = Number.isFinite(rawEfficiency) && rawEfficiency > 0 ? rawEfficiency : 0;
+        return Math.floor(safeMinutes * safeDropRate * efficiency);
     }
 }
 

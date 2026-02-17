@@ -1,5 +1,4 @@
 const { main } = require("../../database/seeder");
-const { runMigrations } = require("../../shared/configuration/database");
 const { startIdleUpdater } = require("../systems/idleTimer");
 
 module.exports = {

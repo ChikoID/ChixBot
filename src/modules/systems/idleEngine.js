@@ -1,3 +1,9 @@
+const idleRemainderState = new Map();
+
+function getRemainderKey(userId, itemId) {
+    return `${userId}:${itemId}`;
+}
+
 function updateIdle(player, items, inventory, userId) {
     const now = Date.now();
     if (!player.last_update || player.last_update <= 0) {
@@ -5,21 +11,58 @@ function updateIdle(player, items, inventory, userId) {
         return { player, inventory };
     }
 
-    const minutes = (now - player.last_update) / 60000;
+    const elapsedMs = now - Number(player.last_update || 0);
+    if (!Number.isFinite(elapsedMs) || elapsedMs <= 0) {
+        player.last_update = now;
+        return { player, inventory };
+    }
 
+    const minutes = elapsedMs / 60000;
     if (minutes <= 0) return { player, inventory };
 
-    let totalStorage = inventory.reduce((acc, inv) => acc + inv.quantity, 0);
+    const rawEfficiency = Number(process.env.IDLE_EFFICIENCY || 0.35);
+    const efficiency = Number.isFinite(rawEfficiency) && rawEfficiency > 0 ? rawEfficiency : 0;
+    if (efficiency <= 0) {
+        player.last_update = now;
+        return { player, inventory };
+    }
+
+    const storageCapRaw = Number(player.storage_cap || 0);
+    const storageCap = Number.isFinite(storageCapRaw) && storageCapRaw > 0 ? Math.floor(storageCapRaw) : 0;
+    if (storageCap <= 0) {
+        player.last_update = now;
+        return { player, inventory };
+    }
+
+    let totalStorage = inventory.reduce((acc, inv) => {
+        const qty = Number(inv.quantity || 0);
+        return acc + (Number.isFinite(qty) && qty > 0 ? qty : 0);
+    }, 0);
     const idleItems = items.filter(item => item.is_idle_item === 1);
     
     for (const item of idleItems) {
-        if (totalStorage >= player.storage_cap) break;
+        if (totalStorage >= storageCap) break;
 
-        const produced = item.drop_rate * minutes;    
-        const spaceLeft = player.storage_cap - totalStorage;
+        const dropRate = Number(item.drop_rate || 0);
+        if (!Number.isFinite(dropRate) || dropRate <= 0) continue;
+
+        const produced = dropRate * minutes * efficiency;
+        const remainderKey = getRemainderKey(userId, item.id);
+        const previousRemainder = idleRemainderState.get(remainderKey) || 0;
+        const producedWithCarry = produced + previousRemainder;
+
+        const spaceLeft = storageCap - totalStorage;
         if (spaceLeft <= 0) break;
 
-        const addAmount = Math.floor(Math.min(produced, spaceLeft));
+        const cappedProduced = Math.min(producedWithCarry, spaceLeft);
+        let addAmount = Math.floor(cappedProduced);
+
+        if (addAmount > spaceLeft) {
+            addAmount = spaceLeft;
+        }
+
+        const remainder = cappedProduced - addAmount;
+        idleRemainderState.set(remainderKey, remainder > 0 ? remainder : 0);
         
         if (addAmount <= 0) continue;
 

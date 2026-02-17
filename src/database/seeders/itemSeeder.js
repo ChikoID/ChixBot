@@ -1,14 +1,5 @@
 const Item = require("../../models/item");
 
-// const items = [
-//     { name: "Common Egg", price: 100, rarity: "common", dropRate: 6 },        // 1 item per 10 detik
-//     { name: "Rare Egg", price: 500, rarity: "rare", dropRate: 3 },            // 0.5 item per 10 detik
-//     { name: "Epic Egg", price: 2000, rarity: "epic", dropRate: 0.6 },         // 0.1 item per 10 detik
-//     { name: "Legendary Egg", price: 10000, rarity: "legendary", dropRate: 0.12 }, // 0.02 item per 10 detik
-//     { name: "Chicken Feed", price: 50, rarity: "common", dropRate: 12 },      // 2 item per 10 detik
-//     { name: "Golden Grain", price: 500, rarity: "rare", dropRate: 4.8 },      // 0.8 item per 10 detik
-// ];
-
 // Seed data untuk item-item dalam game yang berisi sampah luar angkasa
 const items = [
     // Common

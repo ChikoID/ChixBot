@@ -1,9 +1,9 @@
 const { runAsync, getAsync, allAsync } = require("../shared/configuration/database");
 
 class User {
-    static async create(phoneId) {
+    static async create(phoneId, name = "Player") {
         const now = Date.now();
-        await runAsync("INSERT INTO users (phoneId, last_update) VALUES (?, ?)", [phoneId, now]);
+        await runAsync("INSERT INTO users (phoneId, name, last_update) VALUES (?, ?, ?)", [phoneId, name, now]);
         return await this.getByPhone(phoneId);
     }
 

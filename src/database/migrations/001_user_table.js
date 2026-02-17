@@ -4,8 +4,9 @@ module.exports = {
         await runAsync(`CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             phoneId TEXT UNIQUE,
+            name TEXT DEFAULT 'Player',
             chix INTEGER DEFAULT 0,
-            storage_cap INTEGER DEFAULT 1000,
+            storage_cap INTEGER DEFAULT 100,
             last_update INTEGER DEFAULT 0,
             daily_streak INTEGER DEFAULT 0,
             daily_streak_date INTEGER DEFAULT 0,

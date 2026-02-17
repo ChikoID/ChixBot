@@ -1,5 +1,6 @@
 const Inventory = require("../../models/inventory");
 const User = require("../../models/user");
+const { ensureUser } = require("../../shared/utility/ensureUser");
 const StorageEstimator = require("../../shared/utility/storageEstimation");
 
 module.exports = {
@@ -12,15 +13,15 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        const phoneId = message.from.split("@")[0];
-        const user = await User.getByPhone(phoneId);
+        const user = await ensureUser(message, User);
+        if (!user) return;
 
-        if (!user) return await message.reply("Kamu belum memulai permainan! Ketik */start* untuk memulai.");
         const inventory = await Inventory.getAllByUser(user.id);
         if (inventory.length === 0) return await message.reply("Backpack kamu kosong!");
 
         const totalItems = inventory.reduce((sum, inv) => sum + inv.quantity, 0);
-        const backpackList = inventory.map((inv) => `- ${inv.name}: *${inv.quantity}x*`).join("\n");
+        const filteredInventory = inventory.filter((inv) => inv.item_type === "items");
+        const backpackList = filteredInventory.map((inv) => `- ${inv.name}: *${inv.quantity}x*`).join("\n");
 
         const estimate = await StorageEstimator.calculateTimeToFull(totalItems, user.storage_cap)
         const estimateText = estimate.isFull ? `⚠️ ${estimate.formattedTime}` : `⏱️ Penuh dalam: ${estimate.formattedTime}`;

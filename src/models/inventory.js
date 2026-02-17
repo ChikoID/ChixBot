@@ -32,7 +32,7 @@ class Inventory {
             LEFT JOIN items_limited ON inventory.item_type = 'items_limited' AND inventory.item_id = items_limited.id
             WHERE inventory.user_id = ?
             ORDER BY inventory.id ASC`,
-            [userId]
+            [userId],
         );
     }
 
@@ -54,10 +54,12 @@ class Inventory {
 
     static async updateOrCreate(inv) {
         const itemType = inv.item_type || "items";
+
         const existing = await this.getByUserAndItem(inv.user_id, inv.item_id, itemType);
 
         if (existing) {
-            return await this.update(existing.id, inv.user_id, inv.item_id, inv.quantity, itemType);
+            await runAsync("UPDATE inventory SET quantity = ?, updated_at = datetime('now') WHERE user_id = ? AND item_id = ? AND item_type = ?", [inv.quantity, inv.user_id, inv.item_id, itemType]);
+            return await this.getByUserAndItem(inv.user_id, inv.item_id, itemType);
         } else {
             return await this.create(inv.user_id, inv.item_id, inv.quantity, itemType);
         }
@@ -65,6 +67,21 @@ class Inventory {
 
     static async update(id, userId, itemId, quantity, itemType = "items") {
         return await runAsync("UPDATE inventory SET user_id = ?, item_id = ?, item_type = ?, quantity = ?, updated_at = datetime('now') WHERE id = ?", [userId, itemId, itemType, quantity, id]);
+    }
+
+    static async addToInventory(userId, itemId, amount = 1, itemType = "items") {
+        // Khusus untuk increment quantity (market buy)
+        const existing = await this.getByUserAndItem(userId, itemId, itemType);
+        
+        if (existing) {
+            await runAsync(
+                "UPDATE inventory SET quantity = quantity + ?, updated_at = datetime('now') WHERE user_id = ? AND item_id = ? AND item_type = ?",
+                [amount, userId, itemId, itemType]
+            );
+            return await this.getByUserAndItem(userId, itemId, itemType);
+        } else {
+            return await this.create(userId, itemId, amount, itemType);
+        }
     }
 
     static async delete(id) {

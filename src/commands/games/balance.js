@@ -1,4 +1,5 @@
 const User = require("../../models/user");
+const { ensureUser } = require("../../shared/utility/ensureUser");
 
 module.exports = {
     name: "balance",
@@ -10,10 +11,9 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        const phoneId = message.from.split("@")[0];
-        const user = await User.getByPhone(phoneId);
+        const user = await ensureUser(message, User);
+        if (!user) return;
 
-        if (!user) return await message.reply("Kamu belum memulai permainan! Ketik */start* untuk memulai.");
         await message.reply(`Saldo kamu: $${user.chix}`);
     }
 }
