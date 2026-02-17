@@ -7,6 +7,8 @@ module.exports = {
             chix INTEGER DEFAULT 0,
             storage_cap INTEGER DEFAULT 1000,
             last_update INTEGER DEFAULT 0,
+            daily_streak INTEGER DEFAULT 0,
+            daily_streak_date INTEGER DEFAULT 0,
             created_at TEXT DEFAULT (datetime('now')),
             updated_at TEXT DEFAULT (datetime('now'))
             )`);

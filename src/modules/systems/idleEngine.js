@@ -5,14 +5,12 @@ function updateIdle(player, items, inventory, userId) {
     if (minutes <= 0) return { player, inventory };
 
     let totalStorage = inventory.reduce((acc, inv) => acc + inv.quantity, 0);
-
-    for (const item of items) {
+    const idleItems = items.filter(item => item.is_idle_item === 1);
+    
+    for (const item of idleItems) {
         if (totalStorage >= player.storage_cap) break;
 
-        const produced = item.drop_rate * minutes;
-        
-        // if (produced < 1) continue;
-        
+        const produced = item.drop_rate * minutes;    
         const spaceLeft = player.storage_cap - totalStorage;
         if (spaceLeft <= 0) break;
 

@@ -1,8 +1,8 @@
 const { runAsync, getAsync, allAsync } = require("../shared/configuration/database");
 
 class Item {
-    static async create(name, price, rarity, dropRate) {
-        await runAsync("INSERT INTO items (name, price, rarity, drop_rate) VALUES (?, ?, ?, ?)", [name, price, rarity, dropRate]);
+    static async create(name, price, rarity, dropRate, isIdleItem = 1) {
+        await runAsync("INSERT INTO items (name, price, rarity, drop_rate, is_idle_item) VALUES (?, ?, ?, ?, ?)", [name, price, rarity, dropRate, isIdleItem]);
         return await this.getById(this.lastID);
     }
 
@@ -18,8 +18,8 @@ class Item {
         return allAsync("SELECT * FROM items ORDER BY id ASC");
     }
 
-    static async update(id, name, price, rarity, dropRate) {
-        return await runAsync("UPDATE items SET name = ?, price = ?, rarity = ?, drop_rate = ? WHERE id = ?", [name, price, rarity, dropRate, id]);
+    static async update(id, name, price, rarity, dropRate, isIdleItem) {
+        return await runAsync("UPDATE items SET name = ?, price = ?, rarity = ?, drop_rate = ?, is_idle_item = ? WHERE id = ?", [name, price, rarity, dropRate, isIdleItem, id]);
     }
 
     static async delete(id) {

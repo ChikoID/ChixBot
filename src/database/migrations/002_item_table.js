@@ -7,6 +7,7 @@ module.exports = {
             price INTEGER,
             rarity TEXT,
             drop_rate REAL,
+            is_idle_item INTEGER DEFAULT 1,
             created_at TEXT DEFAULT (datetime('now')),
             updated_at TEXT DEFAULT (datetime('now'))
             )`);

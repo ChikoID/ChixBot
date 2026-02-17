@@ -1,5 +1,5 @@
 module.exports = {
-    name: "003_inventory_table",
+    name: "004_inventory_table",
     async up({ runAsync }) {
         await runAsync(`CREATE TABLE IF NOT EXISTS inventory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
