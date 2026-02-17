@@ -2,8 +2,8 @@ const { runAsync, getAsync, allAsync } = require("../shared/configuration/databa
 
 class Item {
     static async create(name, price, rarity, dropRate, isIdleItem = 1) {
-        await runAsync("INSERT INTO items (name, price, rarity, drop_rate, is_idle_item) VALUES (?, ?, ?, ?, ?)", [name, price, rarity, dropRate, isIdleItem]);
-        return await this.getById(this.lastID);
+        const result = await runAsync("INSERT INTO items (name, price, rarity, drop_rate, is_idle_item) VALUES (?, ?, ?, ?, ?)", [name, price, rarity, dropRate, isIdleItem]);
+        return await this.getById(result.lastID);
     }
 
     static async getById(id) {

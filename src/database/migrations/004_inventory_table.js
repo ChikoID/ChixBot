@@ -5,11 +5,11 @@ module.exports = {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
             item_id INTEGER,
+            item_type TEXT DEFAULT 'items',
             quantity INTEGER DEFAULT 1,
             created_at TEXT DEFAULT (datetime('now')),
             updated_at TEXT DEFAULT (datetime('now')),
-            FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (item_id) REFERENCES items(id)
+            FOREIGN KEY (user_id) REFERENCES users(id)
             )`);
     },
     async down({ runAsync }) {

@@ -13,7 +13,7 @@ module.exports = {
         const phoneId = message.from.split("@")[0];
         const user = await User.getByPhone(phoneId);
 
-        if (!user) return await message.reply("Kamu belum memulai permainan! Ketik *!start* untuk memulai.");
+        if (!user) return await message.reply("Kamu belum memulai permainan! Ketik */start* untuk memulai.");
         await message.reply(`Saldo kamu: $${user.chix}`);
     }
 }

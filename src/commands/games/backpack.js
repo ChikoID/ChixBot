@@ -15,7 +15,7 @@ module.exports = {
         const phoneId = message.from.split("@")[0];
         const user = await User.getByPhone(phoneId);
 
-        if (!user) return await message.reply("Kamu belum memulai permainan! Ketik *!start* untuk memulai.");
+        if (!user) return await message.reply("Kamu belum memulai permainan! Ketik */start* untuk memulai.");
         const inventory = await Inventory.getAllByUser(user.id);
         if (inventory.length === 0) return await message.reply("Backpack kamu kosong!");
 
