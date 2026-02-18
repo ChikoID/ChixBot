@@ -3,6 +3,37 @@ const Inventory = require("../../models/inventory");
 const User = require("../../models/user");
 const { ensureUser } = require("../../shared/utility/ensureUser");
 const { runAsync } = require("../../shared/configuration/database");
+const { applyFee } = require("../../shared/utility/fee");
+
+function formatNumber(value) {
+    return Number(value || 0).toLocaleString("id-ID");
+}
+
+function getMarketBuyFeeRate() {
+    const feeMarketRaw = Number(process.env.FEE_MARKET_RATE);
+    if (Number.isFinite(feeMarketRaw) && feeMarketRaw >= 0) return feeMarketRaw;
+
+    const feeGenericRaw = Number(process.env.FEE_RATE);
+    if (Number.isFinite(feeGenericRaw) && feeGenericRaw >= 0) return feeGenericRaw;
+
+    return 0.01;
+}
+
+function getMarketSellFeeRate() {
+    const feeMarketRaw = Number(process.env.FEE_MARKET_RATE);
+    if (Number.isFinite(feeMarketRaw) && feeMarketRaw >= 0) return feeMarketRaw;
+
+    const feeGenericRaw = Number(process.env.FEE_RATE);
+    if (Number.isFinite(feeGenericRaw) && feeGenericRaw >= 0) return feeGenericRaw;
+
+    return 0.01;
+}
+
+function getFeeBoundaries() {
+    const feeMin = process.env.MINIMUN_FEE ? parseInt(process.env.MINIMUN_FEE, 10) : 1;
+    const feeMax = process.env.MAXIMUM_FEE ? parseInt(process.env.MAXIMUM_FEE, 10) : Infinity;
+    return { feeMin, feeMax };
+}
 
 module.exports = {
     name: "market",
@@ -60,8 +91,19 @@ module.exports = {
                 }
 
                 const buyPrice = await ItemLimited.getDynamicPrice(itemToBuy);
-                if (user.chix < buyPrice) {
-                    return await message.reply(`❌ Chix tidak cukup!\nHarga: ${buyPrice} Chix\nKamu punya: ${user.chix} Chix`);
+                const { feeMin, feeMax } = getFeeBoundaries();
+                const buyFeeRate = getMarketBuyFeeRate();
+                const { fee: buyFee } = applyFee(buyPrice, buyFeeRate, { minFee: feeMin, maxFee: feeMax });
+                const buyTotal = buyPrice + buyFee;
+
+                if (user.chix < buyTotal) {
+                    return await message.reply(
+                        `❌ Chix tidak cukup!\n\n` +
+                        `Harga item: ${formatNumber(buyPrice)} Chix\n` +
+                        `Fee: ${formatNumber(buyFee)} Chix\n` +
+                        `Total: ${formatNumber(buyTotal)} Chix\n` +
+                        `Kamu punya: ${formatNumber(user.chix)} Chix`
+                    );
                 }
 
                 // Kurangi stock
@@ -71,13 +113,15 @@ module.exports = {
                 await Inventory.addToInventory(user.id, itemToBuy.id, 1, "items_limited");
 
                 // Kurangi chix user
-                await User.update(user.id, { chix: user.chix - buyPrice });
+                await User.update(user.id, { chix: user.chix - buyTotal });
 
                 return await message.reply(
                     `✅ *Pembelian Berhasil!*\n\n` +
                     `Item: ${itemToBuy.name}\n` +
-                    `Harga: ${buyPrice} Chix\n` +
-                    `Saldo: ${user.chix - buyPrice} Chix\n\n` +
+                    `Harga item: ${formatNumber(buyPrice)} Chix\n` +
+                    `Fee: ${formatNumber(buyFee)} Chix\n` +
+                    `Total: ${formatNumber(buyTotal)} Chix\n` +
+                    `Saldo: ${formatNumber(user.chix - buyTotal)} Chix\n\n` +
                     `Stock tersisa: ${itemToBuy.quantity - 1}`
                 );
 
@@ -101,7 +145,12 @@ module.exports = {
 
                 // Harga jual = 80% dari harga dinamis saat ini
                 const currentPrice = await ItemLimited.getDynamicPrice(itemToSell);
-                const sellPrice = Math.floor(currentPrice * 0.8);
+                const grossSellPrice = Math.floor(currentPrice * 0.8);
+                
+                const { feeMin: sFeeMin, feeMax: sFeMax } = getFeeBoundaries();
+                const sellFeeRate = getMarketSellFeeRate();
+                const { fee: sellFee } = applyFee(grossSellPrice, sellFeeRate, { minFee: sFeeMin, maxFee: sFeMax });
+                const netSellPrice = Math.max(0, grossSellPrice - sellFee);
 
                 // Tambah stock di market
                 await ItemLimited.increaseStock(itemToSell.id, 1);
@@ -117,13 +166,15 @@ module.exports = {
                 }
 
                 // Tambah chix user
-                await User.update(user.id, { chix: user.chix + sellPrice });
+                await User.update(user.id, { chix: user.chix + netSellPrice });
 
                 return await message.reply(
                     `✅ *Penjualan Berhasil!*\n\n` +
                     `Item: ${itemToSell.name}\n` +
-                    `Harga: ${sellPrice} Chix\n` +
-                    `Saldo: ${user.chix + sellPrice} Chix\n\n` +
+                    `Harga item (80%): ${formatNumber(grossSellPrice)} Chix\n` +
+                    `Fee: ${formatNumber(sellFee)} Chix\n` +
+                    `Diterima: ${formatNumber(netSellPrice)} Chix\n` +
+                    `Saldo: ${formatNumber(user.chix + netSellPrice)} Chix\n\n` +
                     `Stock market: ${itemToSell.quantity + 1}`
                 );
 
