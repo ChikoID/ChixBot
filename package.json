@@ -7,11 +7,24 @@
     "type": "commonjs",
     "main": "src/index.js",
     "scripts": {
-        "dev": "node src/index.js"
+        "dev": "nodemon src/index.js",
+        "admin": "nodemon admin/server.js",
+        "dev:all": "concurrently \"npm run dev\" \"npm run admin\"",
+        "tailwind": "npx tailwindcss -i ./admin/public/css/original.css -o ./admin/public/css/style.css --watch"
     },
     "dependencies": {
+        "body-parser": "^2.2.2",
+        "cookie-parser": "^1.4.7",
         "dotenv": "^17.3.1",
+        "ejs": "^4.0.1",
+        "express": "^5.2.1",
         "sqlite3": "^5.1.7",
         "whatsapp-web.js": "^1.34.6"
+    },
+    "devDependencies": {
+        "@tailwindcss/cli": "^4.1.18",
+        "concurrently": "^9.2.1",
+        "nodemon": "^3.1.11",
+        "tailwindcss": "^4.1.18"
     }
 }

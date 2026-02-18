@@ -1,0 +1,15 @@
+<section>
+    <div class="flex flex-col gap-2">
+        <h1 class="text-2xl font-bold">Items Management</h1>
+        <p>Di sini Anda dapat mengelola item-item yang tersedia dalam sistem.</p>
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% items.forEach(item => { %>
+        <div class="border p-2 rounded">
+            <h2 class="font-semibold"><%= item.name %></h2>
+            <p><%= item.description %></p>
+        </div>
+        <% }); %>
+    </div>
+</section>
