@@ -13,6 +13,6 @@ module.exports = {
         const user = await ensureUser(message);
         if (!user) return;
 
-        await message.reply(`Saldo kamu: $${user.chix}`);
+        await message.reply(`💰 Saldo kamu: ${user.chix} Chix!`);
     }
 }

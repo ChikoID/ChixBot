@@ -88,11 +88,6 @@ module.exports = {
         const prefix = process.env.PREFIX || "!";
         const subcommand = (args[0] || "").toLowerCase();
         switch (subcommand) {
-            case "help":
-            case "plans":
-            case "list": {
-                return await message.reply(planListText(prefix));
-            }
             case "create":
             case "start":
             case "buat": {
@@ -172,7 +167,7 @@ module.exports = {
                 );
             }
             default:
-                return await message.reply(`❌ Subcommand tidak dikenal. Gunakan ${prefix}invest help`);
+                return await message.reply(planListText(prefix));
         }
     },
 };

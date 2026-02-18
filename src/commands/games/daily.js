@@ -34,6 +34,6 @@ module.exports = {
             daily_streak_date: now
         });
 
-        await message.reply(`Kamu telah mengklaim bonus harian sebesar ${dailyReward} chix! Streak kamu sekarang: ${newStreak}`);
+        await message.reply(`🎁 Kamu telah mengklaim bonus harian sebesar ${dailyReward} chix!\n🔥 Streak kamu sekarang: ${newStreak}`);
     },
 };
