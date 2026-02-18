@@ -3,7 +3,7 @@ const { ensureUser } = require("../../shared/utility/ensureUser");
 
 module.exports = {
     name: "daily",
-    description: "Claim your daily chix and maintain your streak!",
+    description: "Mengklaim hadiah chix harian sekaligus menjaga streak harianmu agar terus bertambah.",
     aliases: ["dailies", "harian", "bonus"],
     /**
      * @param {import("whatsapp-web.js").Message} message
@@ -11,7 +11,7 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        const user = await ensureUser(message, User);
+        const user = await ensureUser(message);
         if (!user) return;
 
         const now = Date.now();

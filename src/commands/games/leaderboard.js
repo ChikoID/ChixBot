@@ -3,7 +3,7 @@ const { ensureUser } = require("../../shared/utility/ensureUser");
 
 module.exports = {
     name: "leaderboard",
-    description: "View the top chix holders in the server!",
+    description: "Melihat peringkat pemain dengan jumlah chix terbanyak di server.",
     aliases: ["lb", "top", "rank"],
     /**
      * @param {import("whatsapp-web.js").Message} message
@@ -11,7 +11,7 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        const user = await ensureUser(message, User);
+        const user = await ensureUser(message);
         if (!user) return;
 
         const users = await User.list();

@@ -6,7 +6,7 @@ const { runAsync } = require("../../shared/configuration/database");
 
 module.exports = {
     name: "market",
-    description: "Browse and purchase limited items from the market!",
+    description: "Menjelajahi dan membeli item terbatas yang tersedia di market menggunakan chix.",
     aliases: ["shop", "store"],
     /**
      * @param {import("whatsapp-web.js").Message} message
@@ -14,7 +14,7 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        const user = await ensureUser(message, User);
+        const user = await ensureUser(message);
         if (!user) return;
 
         const subcommand = args[0]?.toLowerCase();

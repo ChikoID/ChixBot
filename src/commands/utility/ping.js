@@ -1,7 +1,7 @@
 module.exports = {
     name: "ping",
     aliases: ["p"],
-    description: "Cek response time bot",
+    description: "Mengecek kecepatan respons bot untuk memastikan performanya normal.",
     /**
      * @param {import("whatsapp-web.js").Message} message
      * @param {import("whatsapp-web.js").Client} client

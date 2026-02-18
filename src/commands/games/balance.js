@@ -1,9 +1,8 @@
-const User = require("../../models/user");
 const { ensureUser } = require("../../shared/utility/ensureUser");
 
 module.exports = {
     name: "balance",
-    "description": "Cek saldo koin kamu",
+    "description": "Menampilkan total saldo chix kamu saat ini, sehingga kamu tahu berapa banyak koin yang tersedia untuk digunakan.",
     aliases: ["bal", "money", "chix"],
     /**
      * @param {import("whatsapp-web.js").Message} message
@@ -11,7 +10,7 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        const user = await ensureUser(message, User);
+        const user = await ensureUser(message);
         if (!user) return;
 
         await message.reply(`Saldo kamu: $${user.chix}`);

@@ -3,11 +3,11 @@ const Item = require("../../models/item");
 // Seed data untuk item-item dalam game yang berisi sampah luar angkasa
 const items = [
     // Common
-    { name: "plastic", price: 10, rarity: "common", dropRate: 12 },
-    { name: "paper", price: 5, rarity: "common", dropRate: 12 },
-    { name: "glass", price: 15, rarity: "common", dropRate: 12 },
-    { name: "metal", price: 20, rarity: "common", dropRate: 12 },
-    { name: "bottle", price: 15, rarity: "common", dropRate: 12 },
+    { name: "plastic", price: 10, rarity: "common", dropRate: 10 },
+    { name: "paper", price: 5, rarity: "common", dropRate: 10 },
+    { name: "glass", price: 15, rarity: "common", dropRate: 10 },
+    { name: "metal", price: 20, rarity: "common", dropRate: 10 },
+    { name: "bottle", price: 15, rarity: "common", dropRate: 10 },
 
     // Rare
     { name: "panel", price: 60, rarity: "rare", dropRate: 4.8 },
@@ -21,7 +21,7 @@ const items = [
     { name: "residue", price: 300, rarity: "epic", dropRate: 0.6 },
 
     // Legendary
-    { name: "chixcore", price: 1200, rarity: "legendary", dropRate: 0.12, isIdleItem: 0 },
+    { name: "chixcore", price: 1200, rarity: "legendary", dropRate: 0.12 },
 ];
 
 async function seedItems() {

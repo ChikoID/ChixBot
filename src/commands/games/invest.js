@@ -53,7 +53,7 @@ function planListText(prefix) {
 
 module.exports = {
     name: "invest",
-    description: "Investasi chix dengan durasi, rate, dan penalti jika telat tarik.",
+    description: "Menginvestasikan chix dengan pilihan durasi dan tingkat keuntungan tertentu, dengan risiko penalti jika terlambat melakukan penarikan.",
     aliases: ["investasi"],
     /**
      * @param {import("whatsapp-web.js").Message} message
@@ -61,112 +61,83 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        const user = await ensureUser(message, User);
+        const user = await ensureUser(message);
         if (!user) return;
 
         const prefix = process.env.PREFIX || "!";
         const subcommand = (args[0] || "").toLowerCase();
-
-        if (!subcommand || subcommand === "help") {
-            return await message.reply(planListText(prefix));
-        }
-
-        if (subcommand === "plans" || subcommand === "list") {
-            return await message.reply(planListText(prefix));
-        }
-
-        if (subcommand === "create" || subcommand === "start" || subcommand === "buat") {
-            const amount = parseInt(args[1], 10);
-            const plan = findPlan(args[2]);
-
-            if (!Number.isFinite(amount) || amount <= 0) {
-                return await message.reply(`❌ Jumlah investasi tidak valid.\nContoh: ${prefix}invest create 1000 quick`);
+        switch (subcommand) {
+            case "help":
+            case "plans":
+            case "list": {
+                return await message.reply(planListText(prefix));
             }
+            case "create":
+            case "start":
+            case "buat": {
+                const amount = parseInt(args[1], 10);
+                const plan = findPlan(args[2]);
+                if (!Number.isFinite(amount) || amount <= 0) return await message.reply(`❌ Jumlah investasi tidak valid.\nContoh: ${prefix}invest create 1000 quick`);
+                if (!plan) return await message.reply(`❌ Plan tidak valid.\nPilih: quick, medium, long (atau 1h/6h/24h)`);
+                if (user.chix < amount) return await message.reply(`❌ Chix kamu tidak cukup. Saldo saat ini: ${user.chix}`);
 
-            if (!plan) {
-                return await message.reply(`❌ Plan tidak valid.\nPilih: quick, medium, long (atau 1h/6h/24h)`);
-            }
-
-            if (user.chix < amount) {
-                return await message.reply(`❌ Chix kamu tidak cukup. Saldo saat ini: ${user.chix}`);
-            }
-
-            const active = await Investment.getByUser(user.id);
-            if (active) {
-                return await message.reply(`❌ Kamu masih punya investasi aktif. Gunakan ${prefix}invest status atau ${prefix}invest withdraw.`);
-            }
-
-            await User.update(user.id, { chix: user.chix - amount });
-            const investment = await Investment.create(user.id, amount, plan.rate, plan.durationMinutes);
-
-            const snapshot = Investment.calculateSnapshot(investment, Date.now());
-            return await message.reply(
-                `✅ Investasi dibuat!\n\n` +
-                `Plan: ${plan.label} (${formatDuration(plan.durationMinutes)})\n` +
-                `Modal: ${amount} Chix\n` +
-                `Rate: +${Math.round(plan.rate * 100)}%\n` +
-                `Nilai saat jatuh tempo: ${snapshot.maturedValue} Chix\n\n` +
-                `Saldo tersisa: ${user.chix - amount} Chix`
-            );
-        }
-
-        if (subcommand === "status" || subcommand === "cek") {
-            const active = await Investment.getByUser(user.id);
-            if (!active) {
-                return await message.reply(`ℹ️ Tidak ada investasi aktif. Gunakan ${prefix}invest plans untuk lihat plan.`);
-            }
-
-            const snapshot = Investment.calculateSnapshot(active, Date.now());
-
-            if (!snapshot.isMatured) {
+                const active = await Investment.getByUser(user.id);
+                if (active) return await message.reply(`❌ Kamu masih punya investasi aktif. Gunakan ${prefix}invest status atau ${prefix}invest withdraw.`);
+                await User.update(user.id, { chix: user.chix - amount });
+                const investment = await Investment.create(user.id, amount, plan.rate, plan.durationMinutes);
+                const snapshot = Investment.calculateSnapshot(investment, Date.now());
                 return await message.reply(
-                    `📊 Status Investasi\n\n` +
-                    `Modal: ${snapshot.principal} Chix\n` +
-                    `Rate: +${Math.round(Number(active.rate || 0) * 100)}%\n` +
-                    `Durasi: ${formatDuration(Number(active.duration || 0))}\n` +
-                    `Jatuh tempo: ${snapshot.maturedValue} Chix\n` +
-                    `Sisa waktu: ${formatRelative(snapshot.remainingMs)}\n\n` +
-                    `Belum bisa ditarik.`
+                    `✅ Investasi dibuat!\n\n` + `Plan: ${plan.label} (${formatDuration(plan.durationMinutes)})\n` + `Modal: ${amount} Chix\n` + `Rate: +${Math.round(plan.rate * 100)}%\n` + `Nilai saat jatuh tempo: ${snapshot.maturedValue} Chix\n\n` + `Saldo tersisa: ${user.chix - amount} Chix`,
                 );
             }
+            case "status":
+            case "cek": {
+                const activeInvestment = await Investment.getByUser(user.id);
+                if (!activeInvestment) return await message.reply(`ℹ️ Tidak ada investasi aktif. Gunakan ${prefix}invest plans untuk lihat plan.`);
 
-            const penaltyPercent = Math.round(snapshot.penaltyRate * 100);
-            return await message.reply(
-                `📊 Status Investasi\n\n` +
-                `Modal: ${snapshot.principal} Chix\n` +
-                `Nilai jatuh tempo: ${snapshot.maturedValue} Chix\n` +
-                `Nilai tarik saat ini: ${snapshot.withdrawValue} Chix\n` +
-                `Terlambat: ${formatRelative(snapshot.overdueMs)}\n` +
-                `Penalti: ${penaltyPercent}% per ${snapshot.penaltyIntervalMinutes} menit\n` +
-                `Step penalti: ${snapshot.penaltySteps}`
-            );
-        }
+                const snapshot = Investment.calculateSnapshot(activeInvestment, Date.now());
+                if (!snapshot.isMatured) {
+                    return await message.reply(
+                        `📊 Status Investasi\n\n` +
+                            `Modal: ${snapshot.principal} Chix\n` +
+                            `Rate: +${Math.round(Number(activeInvestment.rate || 0) * 100)}%\n` +
+                            `Durasi: ${formatDuration(Number(activeInvestment.duration || 0))}\n` +
+                            `Jatuh tempo: ${snapshot.maturedValue} Chix\n` +
+                            `Sisa waktu: ${formatRelative(snapshot.remainingMs)}\n\n` +
+                            `Belum bisa ditarik.`,
+                    );
+                }
 
-        if (subcommand === "withdraw" || subcommand === "claim" || subcommand === "tarik") {
-            const active = await Investment.getByUser(user.id);
-            if (!active) {
-                return await message.reply("❌ Tidak ada investasi aktif untuk ditarik.");
+                const penaltyPercent = Math.round(snapshot.penaltyRate * 100);
+                return await message.reply(
+                    `📊 Status Investasi\n\n` +
+                        `Modal: ${snapshot.principal} Chix\n` +
+                        `Nilai jatuh tempo: ${snapshot.maturedValue} Chix\n` +
+                        `Nilai tarik saat ini: ${snapshot.withdrawValue} Chix\n` +
+                        `Terlambat: ${formatRelative(snapshot.overdueMs)}\n` +
+                        `Penalti: ${penaltyPercent}% per ${snapshot.penaltyIntervalMinutes} menit\n` +
+                        `Step penalti: ${snapshot.penaltySteps}`,
+                );
             }
+            case "wd":
+            case "withdraw":
+            case "claim":
+            case "tarik": {
+                const activeInvestment = await Investment.getByUser(user.id);
+                if (!activeInvestment) return await message.reply("❌ Tidak ada investasi aktif untuk ditarik.");
 
-            const snapshot = Investment.calculateSnapshot(active, Date.now());
-            if (!snapshot.isMatured) {
-                return await message.reply(`⏳ Investasi belum jatuh tempo. Sisa waktu: ${formatRelative(snapshot.remainingMs)}`);
+                const snapshot = Investment.calculateSnapshot(activeInvestment, Date.now());
+                if (!snapshot.isMatured) return await message.reply(`⏳ Investasi belum jatuh tempo. Sisa waktu: ${formatRelative(snapshot.remainingMs)}`);
+
+                const newBalance = Number(user.chix || 0) + snapshot.withdrawValue;
+                await User.update(user.id, { chix: newBalance });
+                await Investment.delete(activeInvestment.id);
+                return await message.reply(
+                    `💸 Investasi berhasil ditarik!\n\n` + `Modal: ${snapshot.principal} Chix\n` + `Nilai jatuh tempo: ${snapshot.maturedValue} Chix\n` + `Diterima: ${snapshot.withdrawValue} Chix\n` + `Step penalti: ${snapshot.penaltySteps}\n\n` + `Saldo sekarang: ${newBalance} Chix`,
+                );
             }
-
-            const newBalance = Number(user.chix || 0) + snapshot.withdrawValue;
-            await User.update(user.id, { chix: newBalance });
-            await Investment.delete(active.id);
-
-            return await message.reply(
-                `💸 Investasi berhasil ditarik!\n\n` +
-                `Modal: ${snapshot.principal} Chix\n` +
-                `Nilai jatuh tempo: ${snapshot.maturedValue} Chix\n` +
-                `Diterima: ${snapshot.withdrawValue} Chix\n` +
-                `Step penalti: ${snapshot.penaltySteps}\n\n` +
-                `Saldo sekarang: ${newBalance} Chix`
-            );
+            default:
+                return await message.reply(`❌ Subcommand tidak dikenal. Gunakan ${prefix}invest help`);
         }
-
-        return await message.reply(`❌ Subcommand tidak dikenal. Gunakan ${prefix}invest help`);
     },
 };

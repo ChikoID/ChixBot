@@ -4,7 +4,7 @@ const { ensureUser } = require("../../shared/utility/ensureUser");
 
 module.exports = {
     name: "sell",
-    description: "Jual item dari inventori",
+    description: "Menjual item dari inventori untuk mendapatkan chix sesuai nilai jualnya. Item terbatas (limited) tidak bisa dijual di sini, melainkan melalui market.",
     aliases: ["jual"],
     /**
      * @param {import("whatsapp-web.js").Message} message
@@ -12,7 +12,7 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        const user = await ensureUser(message, User);
+        const user = await ensureUser(message);
         if (!user) return;
 
         const inventory = await Inventory.getAllByUser(user.id);

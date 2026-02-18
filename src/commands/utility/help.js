@@ -1,6 +1,6 @@
 module.exports = {
     name: "help",
-    description: "Menampilkan daftar perintah yang tersedia",
+    description: "Menampilkan panduan dan daftar lengkap command yang bisa digunakan beserta fungsi singkatnya.",
     aliases: ["commands", "menu"],
     /**
      * @param {import("whatsapp-web.js").Message} message
