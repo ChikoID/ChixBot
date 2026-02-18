@@ -10,6 +10,11 @@ module.exports = {
             last_update INTEGER DEFAULT 0,
             daily_streak INTEGER DEFAULT 0,
             daily_streak_date INTEGER DEFAULT 0,
+
+            level INTEGER DEFAULT 1,
+
+            idle_speed_level INTEGER DEFAULT 0,
+            idle_speed_multiplier REAL DEFAULT 1,
             created_at TEXT DEFAULT (datetime('now')),
             updated_at TEXT DEFAULT (datetime('now'))
             )`);

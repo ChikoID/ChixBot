@@ -22,7 +22,7 @@ module.exports = {
         const totalItems = filteredInventory.reduce((sum, inv) => sum + inv.quantity, 0);
         const backpackList = filteredInventory.map((inv) => `- ${inv.name}: *${inv.quantity}x*`).join("\n");
 
-        const estimate = await StorageEstimator.calculateTimeToFull(totalItems, user.storage_cap)
+        const estimate = await StorageEstimator.calculateTimeToFull(totalItems, user.storage_cap, user)
         const estimateText = estimate.isFull ? `⚠️ ${estimate.formattedTime}` : `⏱️ Penuh dalam: ${estimate.formattedTime}`;
 
         await message.reply(`🎒 Isi backpack kamu:\n\n${backpackList}\n\nTotal items: ${totalItems}/${user.storage_cap}\n${estimateText}`);

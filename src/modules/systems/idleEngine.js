@@ -4,6 +4,29 @@ function getRemainderKey(userId, itemId) {
     return `${userId}:${itemId}`;
 }
 
+function resolveIdleSpeedMultiplier(player) {
+    const rawDirectMultiplier = Number(player?.idle_speed_multiplier ?? player?.idle_speed ?? 0);
+    const directMultiplier = Number.isFinite(rawDirectMultiplier) && rawDirectMultiplier > 0 ? rawDirectMultiplier : 0;
+
+    const rawSpeedLevel = Number(player?.idle_speed_level ?? player?.speed_level ?? 0);
+    const speedLevel = Number.isFinite(rawSpeedLevel) && rawSpeedLevel > 0 ? Math.floor(rawSpeedLevel) : 0;
+
+    const rawSpeedPerLevel = Number(process.env.IDLE_SPEED_PER_LEVEL ?? 0.1);
+    const speedPerLevel = Number.isFinite(rawSpeedPerLevel) && rawSpeedPerLevel > 0 ? rawSpeedPerLevel : 0;
+
+    const levelMultiplier = 1 + speedLevel * speedPerLevel;
+    const candidateMultiplier = directMultiplier > 0 ? directMultiplier : levelMultiplier;
+
+    const rawMaxMultiplier = Number(process.env.IDLE_SPEED_MAX_MULTIPLIER ?? 10);
+    const maxMultiplier = Number.isFinite(rawMaxMultiplier) && rawMaxMultiplier > 0 ? rawMaxMultiplier : 10;
+
+    if (!Number.isFinite(candidateMultiplier) || candidateMultiplier <= 0) {
+        return 1;
+    }
+
+    return Math.min(candidateMultiplier, maxMultiplier);
+}
+
 function updateIdle(player, items, inventory, userId) {
     const now = Date.now();
     if (!player.last_update || player.last_update <= 0) {
@@ -19,6 +42,8 @@ function updateIdle(player, items, inventory, userId) {
 
     const minutes = elapsedMs / 60000;
     if (minutes <= 0) return { player, inventory };
+
+    const idleSpeedMultiplier = resolveIdleSpeedMultiplier(player);
 
     const rawEfficiency = Number(process.env.IDLE_EFFICIENCY || 0.35);
     const efficiency = Number.isFinite(rawEfficiency) && rawEfficiency > 0 ? rawEfficiency : 0;
@@ -46,7 +71,7 @@ function updateIdle(player, items, inventory, userId) {
         const dropRate = Number(item.drop_rate || 0);
         if (!Number.isFinite(dropRate) || dropRate <= 0) continue;
 
-        const produced = dropRate * minutes * efficiency;
+        const produced = dropRate * minutes * efficiency * idleSpeedMultiplier;
         const remainderKey = getRemainderKey(userId, item.id);
         const previousRemainder = idleRemainderState.get(remainderKey) || 0;
         const producedWithCarry = produced + previousRemainder;
