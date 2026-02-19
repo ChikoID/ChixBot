@@ -10,7 +10,9 @@
         "dev": "nodemon src/index.js",
         "admin": "nodemon admin/server.js",
         "dev:all": "concurrently \"npm run dev\" \"npm run admin\"",
-        "tailwind": "npx tailwindcss -i ./admin/public/css/original.css -o ./admin/public/css/style.css --watch"
+        "tailwind": "npx tailwindcss -i ./admin/public/css/original.css -o ./admin/public/css/style.css --watch",
+        "format": "prettier . --write",
+        "format:check": "prettier . --check"
     },
     "dependencies": {
         "body-parser": "^2.2.2",
@@ -25,6 +27,8 @@
         "@tailwindcss/cli": "^4.1.18",
         "concurrently": "^9.2.1",
         "nodemon": "^3.1.11",
+        "prettier": "^3.4.2",
+        "prettier-plugin-ejs": "^1.0.3",
         "tailwindcss": "^4.1.18"
     }
 }

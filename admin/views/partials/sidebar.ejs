@@ -1,12 +1,29 @@
-<aside class="bg-fix z-40 w-72 h-full transition-all -translate-x-full sm:translate-x-0 p-4">
-    <div class="h-full px-3 py-4 flex flex-col items-start overflow-y-auto bg-white rounded-xl p-6">
-        <h2 class="text-2xl font-extrabold mb-6">Admin Panel</h2>
+<aside
+    class="bg-fix z-40 w-72 h-full transition-all -translate-x-full sm:translate-x-0 p-4 font-rajdhani hidden-scrollbar"
+>
+    <% const activeClasses = [ "flex", "items-center", "gap-3", "w-full", "px-3", "py-2", "rounded-xs", "transition",
+    "text-primary", "bg-button-primary", "hover:bg-button-primary/80", "font-bold", ].join(" "); const inactiveClasses =
+    [ "flex", "items-center", "gap-3", "w-full", "px-3", "py-2", "rounded-xs", "transition", "bg-button-secondary",
+    "text-white", "hover:bg-button-secondary/80", ].join(" "); const pathNow = currentPath || ""; const isActive =
+    (prefix) => pathNow === prefix || pathNow.startsWith(prefix + "/"); %>
+    <div
+        class="h-full px-3 py-4 flex flex-col items-start overflow-y-auto bg-card text-secondary rounded-xs p-6 hidden-scrollbar border border-border"
+    >
+        <h2 class="text-2xs font-extrabold mb-6">Admin Panel</h2>
         <nav class="flex-center h-full flex-col gap-3 w-full">
-            <a href="/admin/dashboard" class="flex items-center gap-3 w-full px-3 py-2 rounded-xl transition bg-green-600 text-white"><i class="bi bi-plus text-2xl"></i> Dashboard</a>
-            <a href="/admin/dashboard" class="flex items-center gap-3 w-full px-3 py-2 rounded-xl transition bg-green-600 text-white"><i class="bi bi-plus text-2xl"></i> Dashboard</a>
-            <a href="/admin/dashboard" class="flex items-center gap-3 w-full px-3 py-2 rounded-xl transition bg-green-600 text-white"><i class="bi bi-plus text-2xl"></i> Dashboard</a>
-            <a href="/admin/dashboard" class="flex items-center gap-3 w-full px-3 py-2 rounded-xl transition bg-green-600 text-white"><i class="bi bi-plus text-2xl"></i> Dashboard</a>
-            <a href="/auth/logout" class="flex items-center gap-3 mt-auto w-full px-3 py-2 rounded-xl transition bg-red-500 hover:bg-red-600 text-white font-bold"><i class="bi bi-box-arrow-right text-2xl"></i> Logout</a>
+            <a href="/auth/me" class="<%= isActive('/auth/me') ? activeClasses : inactiveClasses %>">Dashboard</a>
+            <a href="/users" class="<%= isActive('/users') ? activeClasses : inactiveClasses %>">Users</a>
+            <a href="/items" class="<%= isActive('/items') ? activeClasses : inactiveClasses %>">Items</a>
+            <a href="/items-limited" class="<%= isActive('/items-limited') ? activeClasses : inactiveClasses %>"
+                >Items Limited</a
+            >
+            <a href="/inventory" class="<%= isActive('/inventory') ? activeClasses : inactiveClasses %>">Inventory</a>
+            <a
+                href="/auth/logout"
+                class="inline-block px-3 py-1 rounded-xs bg-button-accent/15 border border-button-accent/50 mt-auto w-full text-button-accent font-techmono"
+            >
+                Logout</a
+            >
         </nav>
     </div>
 </aside>

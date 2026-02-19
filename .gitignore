@@ -9,3 +9,8 @@ node_modules
 *.sql
 *.sqlite
 *.log
+
+.prettier*
+.vscode/*
+
+original.css

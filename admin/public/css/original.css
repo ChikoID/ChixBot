@@ -3,6 +3,18 @@
 @source "../../views/*.ejs";
 @source "../../views/partials/*.ejs";
 
+@theme {
+    --color-primary: #0a0c10;
+    --color-secondary: #e8edf5;
+    --color-button-primary: #a3e635;
+    --color-button-secondary: #141720;
+    --color-button-accent: #f87171;
+    --color-border: #1e2535;
+    --color-card: #0f1117;
+    --font-rajdhani: "Rajdhani", sans-serif;
+    --font-techmono: "Share Tech Mono", monospace;
+}
+
 @layer components {
     .bg-fix {
         @apply fixed top-0 left-0 right-0 w-full;
@@ -27,8 +39,8 @@
 
 :root,
 html {
-    background-color: #fffaf1;
-    color: #1e1e1e;
+    background-color: #0a0c10;
+    color: #e8edf5;
     scroll-behavior: smooth;
     -ms-overflow-style: none;
     scrollbar-width: none;

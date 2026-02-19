@@ -1,15 +1,177 @@
-<section>
-    <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold">Users Management</h1>
-        <p>Di sini Anda dapat mengelola pengguna yang tersedia dalam sistem.</p>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
+
+    .usr-section {
+        font-family: "Rajdhani", sans-serif;
+        background: #0a0c10;
+        min-height: 100vh;
+        padding: 2.5rem 2rem;
+        color: #c9d1e0;
+    }
+
+    .usr-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        margin-bottom: 2.5rem;
+        position: relative;
+        padding-left: 1.2rem;
+    }
+
+    .usr-header::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, #a78bfa, #ec4899);
+        border-radius: 2px;
+    }
+
+    .usr-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #e8edf5;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .usr-header h1 span {
+        color: #a78bfa;
+    }
+
+    .usr-header p {
+        font-size: 0.85rem;
+        color: #6b7a94;
+        letter-spacing: 0.05em;
+        margin: 0;
+        font-family: "Share Tech Mono", monospace;
+    }
+
+    .usr-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.7rem;
+        font-family: "Share Tech Mono", monospace;
+        letter-spacing: 0.1em;
+        color: #a78bfa;
+        background: rgba(167, 139, 250, 0.08);
+        border: 1px solid rgba(167, 139, 250, 0.2);
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+        width: fit-content;
+        margin-bottom: 2rem;
+    }
+
+    .usr-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1rem;
+    }
+
+    .usr-card {
+        background: #0f1117;
+        border: 1px solid #1e2535;
+        border-radius: 4px;
+        padding: 1.25rem 1.4rem;
+        position: relative;
+        overflow: hidden;
+        transition:
+            border-color 0.2s,
+            transform 0.2s;
+        cursor: default;
+    }
+
+    .usr-card:hover {
+        border-color: #a78bfa;
+        transform: translateY(-2px);
+    }
+
+    .usr-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #a78bfa, #ec4899, transparent);
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .usr-card:hover::before {
+        opacity: 1;
+    }
+
+    .usr-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #a78bfa, #ec4899);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #0a0c10;
+        margin-bottom: 1rem;
+        font-family: "Rajdhani", sans-serif;
+        letter-spacing: 0.05em;
+    }
+
+    .usr-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #e8edf5;
+        letter-spacing: 0.06em;
+        margin: 0 0 0.4rem 0;
+        text-transform: uppercase;
+    }
+
+    .usr-desc {
+        font-size: 0.85rem;
+        color: #6b7a94;
+        line-height: 1.5;
+        margin: 0;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.78rem;
+        letter-spacing: 0.02em;
+    }
+
+    .usr-empty {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 1.2rem;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.78rem;
+        color: #2d3748;
+        letter-spacing: 0.1em;
+    }
+</style>
+
+<section class="usr-section">
+    <div class="usr-header">
+        <h1>USERS <span>MGMT</span></h1>
+        <p>// kelola pengguna yang tersedia dalam sistem</p>
     </div>
 
-    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="usr-count">◈ REGISTERED USERS</div>
+
+    <div class="usr-grid">
+        <% if (!users || users.length === 0) { %>
+        <div class="usr-empty">// NO_USERS · belum ada pengguna terdaftar</div>
+        <% } else { %>
         <% users.forEach(item => { %>
-        <div class="border p-2 rounded">
-            <h2 class="font-semibold"><%= item.name %></h2>
-            <p><%= item.description %></p>
+        <div class="usr-card">
+            <div class="usr-avatar"><%= item.name ? item.name.charAt(0).toUpperCase() : '?' %></div>
+            <h2 class="usr-name"><%= item.name %></h2>
+            <p class="usr-desc"><%= item.description || '// no description' %></p>
         </div>
         <% }); %>
+        <% } %>
     </div>
 </section>

@@ -1,5 +1,316 @@
-<section>
-    <h1 class="text-2xl font-bold">Admin Login Berhasil</h1>
-    <p>Halo, <strong><%= username %></strong>.</p>
-    <p>Session aktif dan siap dipakai untuk route admin.</p>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
+
+    .dash-section {
+        font-family: "Rajdhani", sans-serif;
+        background: #0a0c10;
+        min-height: 100vh;
+        padding: 2.5rem 2rem;
+        color: #c9d1e0;
+    }
+
+    .dash-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        margin-bottom: 2.5rem;
+        position: relative;
+        padding-left: 1.2rem;
+    }
+
+    .dash-header::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, #00e5ff, #a78bfa);
+        border-radius: 2px;
+    }
+
+    .dash-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #e8edf5;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .dash-header h1 span {
+        color: #00e5ff;
+    }
+
+    .dash-header p {
+        font-size: 0.85rem;
+        color: #6b7a94;
+        letter-spacing: 0.05em;
+        margin: 0;
+        font-family: "Share Tech Mono", monospace;
+    }
+
+    /* Status banner */
+    .dash-status {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: #0f1117;
+        border: 1px solid #1e2535;
+        border-left: 3px solid #a3e635;
+        border-radius: 3px;
+        padding: 1rem 1.4rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dash-status::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #a3e635, transparent);
+    }
+
+    .dash-status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #a3e635;
+        flex-shrink: 0;
+        animation: pulse-dot 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+        0%,
+        100% {
+            box-shadow: 0 0 0 0 rgba(163, 230, 53, 0.5);
+        }
+        50% {
+            box-shadow: 0 0 0 5px rgba(163, 230, 53, 0);
+        }
+    }
+
+    .dash-status-text {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.82rem;
+        letter-spacing: 0.06em;
+        color: #bef264;
+    }
+
+    .dash-status-text strong {
+        color: #e8edf5;
+        font-weight: 400;
+    }
+
+    /* Grid cards */
+    .dash-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .dash-card {
+        background: #0f1117;
+        border: 1px solid #1e2535;
+        border-radius: 4px;
+        padding: 1.4rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+        transition:
+            border-color 0.2s,
+            transform 0.2s;
+    }
+
+    .dash-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .dash-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+    }
+
+    .dash-card-cyan::before {
+        background: linear-gradient(90deg, #00e5ff, transparent);
+    }
+    .dash-card-lime::before {
+        background: linear-gradient(90deg, #a3e635, transparent);
+    }
+    .dash-card-amber::before {
+        background: linear-gradient(90deg, #f59e0b, transparent);
+    }
+    .dash-card-purple::before {
+        background: linear-gradient(90deg, #a78bfa, transparent);
+    }
+
+    .dash-card:hover {
+        border-color: #2a3347;
+    }
+
+    .dash-card-icon {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-bottom: 0.8rem;
+    }
+
+    .dash-card-cyan .dash-card-icon {
+        color: #00e5ff;
+    }
+    .dash-card-lime .dash-card-icon {
+        color: #a3e635;
+    }
+    .dash-card-amber .dash-card-icon {
+        color: #f59e0b;
+    }
+    .dash-card-purple .dash-card-icon {
+        color: #a78bfa;
+    }
+
+    .dash-card-label {
+        font-size: 0.85rem;
+        color: #6b7a94;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.25rem;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.72rem;
+    }
+
+    .dash-card-value {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #e8edf5;
+        letter-spacing: 0.05em;
+        line-height: 1;
+    }
+
+    /* Info panel */
+    .dash-info {
+        background: #0f1117;
+        border: 1px solid #1e2535;
+        border-radius: 4px;
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dash-info::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #00e5ff, #a78bfa, transparent);
+    }
+
+    .dash-info-title {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.75rem;
+        color: #00e5ff;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin: 0 0 1.2rem 0;
+    }
+
+    .dash-info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.65rem 0;
+        border-bottom: 1px solid #141720;
+    }
+
+    .dash-info-row:last-child {
+        border-bottom: none;
+    }
+
+    .dash-info-key {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.72rem;
+        color: #4a5568;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .dash-info-val {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #c9d1e0;
+        letter-spacing: 0.04em;
+    }
+
+    .dash-info-val-green {
+        color: #a3e635;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.8rem;
+    }
+</style>
+
+<section class="dash-section">
+    <div class="dash-header">
+        <h1>ADMIN <span>DASHBOARD</span></h1>
+        <p>// panel kontrol sistem · session aktif</p>
+    </div>
+
+    <div class="dash-status">
+        <div class="dash-status-dot"></div>
+        <div class="dash-status-text">
+            LOGIN_SUCCESS · Halo, <strong><%= username %></strong> — session aktif dan siap digunakan.
+        </div>
+    </div>
+
+    <div class="dash-grid">
+        <div class="dash-card dash-card-cyan">
+            <div class="dash-card-icon">◈ Inventory</div>
+            <div class="dash-card-label">// modul aktif</div>
+            <div class="dash-card-value">READ</div>
+        </div>
+        <div class="dash-card dash-card-lime">
+            <div class="dash-card-icon">◈ Items</div>
+            <div class="dash-card-label">// akses level</div>
+            <div class="dash-card-value">CRUD</div>
+        </div>
+        <div class="dash-card dash-card-amber">
+            <div class="dash-card-icon">◆ Limited</div>
+            <div class="dash-card-label">// akses level</div>
+            <div class="dash-card-value">CRUD</div>
+        </div>
+        <div class="dash-card dash-card-purple">
+            <div class="dash-card-icon">◈ Users</div>
+            <div class="dash-card-label">// akses level</div>
+            <div class="dash-card-value">MGMT</div>
+        </div>
+    </div>
+
+    <div class="dash-info">
+        <div class="dash-info-title">// session_info</div>
+        <div class="dash-info-row">
+            <span class="dash-info-key">administrator</span>
+            <span class="dash-info-val"><%= username %></span>
+        </div>
+        <div class="dash-info-row">
+            <span class="dash-info-key">status</span>
+            <span class="dash-info-val-green">● ACTIVE</span>
+        </div>
+        <div class="dash-info-row">
+            <span class="dash-info-key">role</span>
+            <span class="dash-info-val">ADMIN</span>
+        </div>
+        <div class="dash-info-row">
+            <span class="dash-info-key">akses route</span>
+            <span class="dash-info-val">FULL</span>
+        </div>
+    </div>
 </section>

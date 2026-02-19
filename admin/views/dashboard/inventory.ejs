@@ -1,0 +1,221 @@
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
+
+    .inv-section {
+        font-family: "Rajdhani", sans-serif;
+        background: #0a0c10;
+        min-height: 100vh;
+        padding: 2.5rem 2rem;
+        color: #c9d1e0;
+    }
+
+    .inv-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-left: 1.2rem;
+    }
+
+    .inv-header::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, #00e5ff, #7c3aed);
+        border-radius: 2px;
+    }
+
+    .inv-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #e8edf5;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .inv-header h1 span {
+        color: #00e5ff;
+    }
+
+    .inv-header p {
+        font-size: 0.85rem;
+        color: #6b7a94;
+        letter-spacing: 0.05em;
+        margin: 0;
+        font-family: "Share Tech Mono", monospace;
+    }
+
+    .inv-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.7rem;
+        font-family: "Share Tech Mono", monospace;
+        letter-spacing: 0.08em;
+        color: #00e5ff;
+        background: rgba(0, 229, 255, 0.08);
+        border: 1px solid rgba(0, 229, 255, 0.2);
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+        width: fit-content;
+        margin-bottom: 1rem;
+    }
+
+    .inv-badge::before {
+        content: "●";
+        font-size: 0.5rem;
+        animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.2;
+        }
+    }
+
+    .inv-table-wrap {
+        background: #0f1117;
+        border: 1px solid #1e2535;
+        border-radius: 4px;
+        overflow-x: auto;
+        position: relative;
+    }
+
+    .inv-table-wrap::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #00e5ff, #7c3aed, transparent);
+    }
+
+    .inv-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        min-width: 600px;
+    }
+
+    .inv-table thead {
+        background: #141720;
+    }
+
+    .inv-table thead th {
+        padding: 0.9rem 1.2rem;
+        text-align: left;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #00e5ff;
+        font-weight: 400;
+        border-bottom: 1px solid #1e2535;
+    }
+
+    .inv-table tbody tr {
+        border-bottom: 1px solid #141720;
+        transition: background 0.15s;
+    }
+
+    .inv-table tbody tr:hover {
+        background: rgba(0, 229, 255, 0.03);
+    }
+
+    .inv-table tbody td {
+        padding: 0.85rem 1.2rem;
+        color: #c9d1e0;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    .inv-table tbody td:first-child {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.8rem;
+        color: #4a5568;
+    }
+
+    .inv-empty {
+        text-align: center;
+        padding: 3rem 1.2rem;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.8rem;
+        color: #2d3748;
+        letter-spacing: 0.08em;
+    }
+
+    .price-cell {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.82rem;
+        color: #a3e635;
+    }
+
+    .type-chip {
+        display: inline-block;
+        padding: 0.15rem 0.6rem;
+        border-radius: 2px;
+        font-size: 0.75rem;
+        font-family: "Share Tech Mono", monospace;
+        letter-spacing: 0.06em;
+        background: rgba(124, 58, 237, 0.15);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+        color: #a78bfa;
+    }
+</style>
+
+<section class="inv-section">
+    <div class="inv-header">
+        <h1>INV<span>ENTORY</span></h1>
+        <p>// read-only · semua data inventory user</p>
+    </div>
+
+    <div class="inv-badge">LIVE READ-ONLY ACCESS</div>
+
+    <div class="inv-table-wrap">
+        <table class="inv-table">
+            <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>User</th>
+                    <th>Item Type</th>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (!inventory || inventory.length === 0) { %>
+                <tr>
+                    <td colspan="6">
+                        <div class="inv-empty">// NO_DATA · belum ada data inventory</div>
+                    </td>
+                </tr>
+                <% } %>
+
+                <% if (inventory && inventory.length > 0) { %> <% inventory.forEach((row) => { %>
+                <tr>
+                    <td><%= row.id %></td>
+                    <td><%= row.name || `User #${row.user_id}` %></td>
+                    <td><span class="type-chip"><%= row.item_type %></span></td>
+                    <td><%= row.item_name || `Item #${row.item_id}` %></td>
+                    <td><%= row.quantity %></td>
+                    <td class="price-cell"><%= row.item_price || 0 %></td>
+                </tr>
+                <% }); %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</section>
