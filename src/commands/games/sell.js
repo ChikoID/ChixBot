@@ -5,7 +5,8 @@ const { applyFee } = require("../../shared/utility/fee");
 
 module.exports = {
     name: "sell",
-    description: "Menjual item dari inventori untuk mendapatkan chix sesuai nilai jualnya. Item terbatas (limited) tidak bisa dijual di sini, melainkan melalui market.",
+    description:
+        "Menjual item dari inventori untuk mendapatkan chix sesuai nilai jualnya. Item terbatas (limited) tidak bisa dijual di sini, melainkan melalui market.",
     aliases: ["jual"],
     /**
      * @param {import("whatsapp-web.js").Message} message
@@ -49,6 +50,12 @@ module.exports = {
         const newChix = user.chix + totalEarnings;
         await User.update(user.id, { chix: newChix });
 
-        await message.reply(`💰 *Penjualan Berhasil!*\n\n` + `${soldItems.join("\n")}\n\n` + `💵 Total: +${totalEarnings} Chix\n` + `💰 Saldo: ${newChix} Chix\n\n` + `_Item limited dijual via \`/market\` sell_`);
+        await message.reply(
+            `💰 *Penjualan Berhasil!*\n\n` +
+                `${soldItems.join("\n")}\n\n` +
+                `💵 Total: +${totalEarnings} Chix\n` +
+                `💰 Saldo: ${newChix} Chix\n\n` +
+                `_Item limited dijual via \`/market\` sell_`,
+        );
     },
 };

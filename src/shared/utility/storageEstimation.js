@@ -3,7 +3,8 @@ const Item = require("../../models/item");
 class StorageEstimator {
     static resolveIdleSpeedMultiplier(player = {}) {
         const rawDirectMultiplier = Number(player?.idle_speed_multiplier ?? player?.idle_speed ?? 0);
-        const directMultiplier = Number.isFinite(rawDirectMultiplier) && rawDirectMultiplier > 0 ? rawDirectMultiplier : 0;
+        const directMultiplier =
+            Number.isFinite(rawDirectMultiplier) && rawDirectMultiplier > 0 ? rawDirectMultiplier : 0;
 
         const rawSpeedLevel = Number(player?.idle_speed_level ?? player?.speed_level ?? 0);
         const speedLevel = Number.isFinite(rawSpeedLevel) && rawSpeedLevel > 0 ? Math.floor(rawSpeedLevel) : 0;
@@ -49,7 +50,10 @@ class StorageEstimator {
         const rawEfficiency = Number(process.env.IDLE_EFFICIENCY || 0.35);
         const efficiency = Number.isFinite(rawEfficiency) && rawEfficiency > 0 ? rawEfficiency : 0;
         const speedMultiplier = this.resolveIdleSpeedMultiplier(player);
-        const productionPerMinute = idleItems.reduce((sum, item) => sum + item.drop_rate * efficiency * speedMultiplier, 0);
+        const productionPerMinute = idleItems.reduce(
+            (sum, item) => sum + item.drop_rate * efficiency * speedMultiplier,
+            0,
+        );
 
         if (productionPerMinute <= 0) {
             return {

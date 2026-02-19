@@ -63,8 +63,8 @@ function updateIdle(player, items, inventory, userId) {
         const qty = Number(inv.quantity || 0);
         return acc + (Number.isFinite(qty) && qty > 0 ? qty : 0);
     }, 0);
-    const idleItems = items.filter(item => item.is_idle_item === 1);
-    
+    const idleItems = items.filter((item) => item.is_idle_item === 1);
+
     for (const item of idleItems) {
         if (totalStorage >= storageCap) break;
 
@@ -88,7 +88,7 @@ function updateIdle(player, items, inventory, userId) {
 
         const remainder = cappedProduced - addAmount;
         idleRemainderState.set(remainderKey, remainder > 0 ? remainder : 0);
-        
+
         if (addAmount <= 0) continue;
 
         const itm = inventory.find((inv) => inv.item_id === item.id && (inv.item_type || "items") === "items");

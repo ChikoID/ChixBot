@@ -2,7 +2,10 @@ const { runAsync, getAsync, allAsync } = require("../shared/configuration/databa
 
 class Item {
     static async create(name, price, rarity, dropRate, isIdleItem = 1) {
-        const result = await runAsync("INSERT INTO items (name, price, rarity, drop_rate, is_idle_item) VALUES (?, ?, ?, ?, ?)", [name, price, rarity, dropRate, isIdleItem]);
+        const result = await runAsync(
+            "INSERT INTO items (name, price, rarity, drop_rate, is_idle_item) VALUES (?, ?, ?, ?, ?)",
+            [name, price, rarity, dropRate, isIdleItem],
+        );
         return await this.getById(result.lastID);
     }
 
@@ -19,7 +22,10 @@ class Item {
     }
 
     static async update(id, name, price, rarity, dropRate, isIdleItem) {
-        return await runAsync("UPDATE items SET name = ?, price = ?, rarity = ?, drop_rate = ?, is_idle_item = ? WHERE id = ?", [name, price, rarity, dropRate, isIdleItem, id]);
+        return await runAsync(
+            "UPDATE items SET name = ?, price = ?, rarity = ?, drop_rate = ?, is_idle_item = ? WHERE id = ?",
+            [name, price, rarity, dropRate, isIdleItem, id],
+        );
     }
 
     static async delete(id) {

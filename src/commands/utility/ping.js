@@ -11,8 +11,8 @@ module.exports = {
         const startTime = Date.now();
         await message.reply("🏓 Pong!");
         const endTime = Date.now();
-        
+
         const responseTime = endTime - startTime;
         await message.reply(`⏱️ Response time: ${responseTime}ms`);
-    }
+    },
 };

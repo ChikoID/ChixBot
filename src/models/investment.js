@@ -2,7 +2,10 @@ const { runAsync, getAsync } = require("../shared/configuration/database");
 
 class Investment {
     static async create(userId, principal, rate, duration) {
-        const result = await runAsync("INSERT INTO investments (user_id, principal, rate, duration) VALUES (?, ?, ?, ?)", [userId, principal, rate, duration]);
+        const result = await runAsync(
+            "INSERT INTO investments (user_id, principal, rate, duration) VALUES (?, ?, ?, ?)",
+            [userId, principal, rate, duration],
+        );
         return await this.getById(result.lastID);
     }
 
@@ -25,8 +28,10 @@ class Investment {
 
         const penaltyRateRaw = Number(process.env.INVEST_PENALTY_RATE || 0.03);
         const penaltyIntervalRaw = Number(process.env.INVEST_PENALTY_INTERVAL_MINUTES || 60);
-        const penaltyRate = Number.isFinite(penaltyRateRaw) && penaltyRateRaw > 0 && penaltyRateRaw < 1 ? penaltyRateRaw : 0;
-        const penaltyIntervalMinutes = Number.isFinite(penaltyIntervalRaw) && penaltyIntervalRaw > 0 ? penaltyIntervalRaw : 60;
+        const penaltyRate =
+            Number.isFinite(penaltyRateRaw) && penaltyRateRaw > 0 && penaltyRateRaw < 1 ? penaltyRateRaw : 0;
+        const penaltyIntervalMinutes =
+            Number.isFinite(penaltyIntervalRaw) && penaltyIntervalRaw > 0 ? penaltyIntervalRaw : 60;
 
         const createdAtMs = this.parseCreatedAt(investment?.created_at);
         const durationMs = durationMinutes * 60000;

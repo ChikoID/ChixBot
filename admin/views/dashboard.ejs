@@ -1,90 +1,4 @@
 <style>
-    @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
-
-    .dash-section {
-        font-family: "Rajdhani", sans-serif;
-        background: #0a0c10;
-        min-height: 100vh;
-        padding: 2.5rem 2rem;
-        color: #c9d1e0;
-    }
-
-    .dash-header {
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-        margin-bottom: 2.5rem;
-        position: relative;
-        padding-left: 1.2rem;
-    }
-
-    .dash-header::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        background: linear-gradient(180deg, #00e5ff, #a78bfa);
-        border-radius: 2px;
-    }
-
-    .dash-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: #e8edf5;
-        margin: 0;
-        line-height: 1;
-    }
-
-    .dash-header h1 span {
-        color: #00e5ff;
-    }
-
-    .dash-header p {
-        font-size: 0.85rem;
-        color: #6b7a94;
-        letter-spacing: 0.05em;
-        margin: 0;
-        font-family: "Share Tech Mono", monospace;
-    }
-
-    /* Status banner */
-    .dash-status {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        background: #0f1117;
-        border: 1px solid #1e2535;
-        border-left: 3px solid #a3e635;
-        border-radius: 3px;
-        padding: 1rem 1.4rem;
-        margin-bottom: 2rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .dash-status::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #a3e635, transparent);
-    }
-
-    .dash-status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #a3e635;
-        flex-shrink: 0;
-        animation: pulse-dot 1.8s ease-in-out infinite;
-    }
-
     @keyframes pulse-dot {
         0%,
         100% {
@@ -94,223 +8,84 @@
             box-shadow: 0 0 0 5px rgba(163, 230, 53, 0);
         }
     }
-
-    .dash-status-text {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.82rem;
-        letter-spacing: 0.06em;
-        color: #bef264;
-    }
-
-    .dash-status-text strong {
-        color: #e8edf5;
-        font-weight: 400;
-    }
-
-    /* Grid cards */
-    .dash-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    .dash-card {
-        background: #0f1117;
-        border: 1px solid #1e2535;
-        border-radius: 4px;
-        padding: 1.4rem 1.5rem;
-        position: relative;
-        overflow: hidden;
-        transition:
-            border-color 0.2s,
-            transform 0.2s;
-    }
-
-    .dash-card:hover {
-        transform: translateY(-2px);
-    }
-
-    .dash-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-    }
-
-    .dash-card-cyan::before {
-        background: linear-gradient(90deg, #00e5ff, transparent);
-    }
-    .dash-card-lime::before {
-        background: linear-gradient(90deg, #a3e635, transparent);
-    }
-    .dash-card-amber::before {
-        background: linear-gradient(90deg, #f59e0b, transparent);
-    }
-    .dash-card-purple::before {
-        background: linear-gradient(90deg, #a78bfa, transparent);
-    }
-
-    .dash-card:hover {
-        border-color: #2a3347;
-    }
-
-    .dash-card-icon {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.68rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        margin-bottom: 0.8rem;
-    }
-
-    .dash-card-cyan .dash-card-icon {
-        color: #00e5ff;
-    }
-    .dash-card-lime .dash-card-icon {
-        color: #a3e635;
-    }
-    .dash-card-amber .dash-card-icon {
-        color: #f59e0b;
-    }
-    .dash-card-purple .dash-card-icon {
-        color: #a78bfa;
-    }
-
-    .dash-card-label {
-        font-size: 0.85rem;
-        color: #6b7a94;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.25rem;
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.72rem;
-    }
-
-    .dash-card-value {
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: #e8edf5;
-        letter-spacing: 0.05em;
-        line-height: 1;
-    }
-
-    /* Info panel */
-    .dash-info {
-        background: #0f1117;
-        border: 1px solid #1e2535;
-        border-radius: 4px;
-        padding: 1.5rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .dash-info::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #00e5ff, #a78bfa, transparent);
-    }
-
-    .dash-info-title {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.75rem;
-        color: #00e5ff;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        margin: 0 0 1.2rem 0;
-    }
-
-    .dash-info-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.65rem 0;
-        border-bottom: 1px solid #141720;
-    }
-
-    .dash-info-row:last-child {
-        border-bottom: none;
-    }
-
-    .dash-info-key {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.72rem;
-        color: #4a5568;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-    }
-
-    .dash-info-val {
-        font-size: 0.95rem;
-        font-weight: 600;
-        color: #c9d1e0;
-        letter-spacing: 0.04em;
-    }
-
-    .dash-info-val-green {
-        color: #a3e635;
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.8rem;
-    }
 </style>
 
-<section class="dash-section">
-    <div class="dash-header">
-        <h1>ADMIN <span>DASHBOARD</span></h1>
-        <p>// panel kontrol sistem · session aktif</p>
+<section class="font-rajdhani bg-[#0a0c10] min-h-screen py-10 px-8 text-text-secondary">
+    <div
+        class="flex flex-col gap-1.5 mb-10 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-0.5 before:bg-linear-to-b before:from-cyan-bright before:to-purple-bright before:rounded-sm"
+    >
+        <h1 class="text-[2rem] font-bold tracking-[0.12em] uppercase text-[#e8edf5] m-0 leading-none">
+            ADMIN <span class="text-cyan-bright">DASHBOARD</span>
+        </h1>
+        <p class="text-[0.85rem] text-text-muted tracking-[0.05em] m-0 font-techmono">
+            // panel kontrol sistem · session aktif
+        </p>
     </div>
 
-    <div class="dash-status">
-        <div class="dash-status-dot"></div>
-        <div class="dash-status-text">
-            LOGIN_SUCCESS · Halo, <strong><%= username %></strong> — session aktif dan siap digunakan.
-        </div>
-    </div>
-
-    <div class="dash-grid">
-        <div class="dash-card dash-card-cyan">
-            <div class="dash-card-icon">◈ Inventory</div>
-            <div class="dash-card-label">// modul aktif</div>
-            <div class="dash-card-value">READ</div>
-        </div>
-        <div class="dash-card dash-card-lime">
-            <div class="dash-card-icon">◈ Items</div>
-            <div class="dash-card-label">// akses level</div>
-            <div class="dash-card-value">CRUD</div>
-        </div>
-        <div class="dash-card dash-card-amber">
-            <div class="dash-card-icon">◆ Limited</div>
-            <div class="dash-card-label">// akses level</div>
-            <div class="dash-card-value">CRUD</div>
-        </div>
-        <div class="dash-card dash-card-purple">
-            <div class="dash-card-icon">◈ Users</div>
-            <div class="dash-card-label">// akses level</div>
-            <div class="dash-card-value">MGMT</div>
+    <div
+        class="flex items-center gap-3 bg-[#0f1117] border border-border border-l-[3px] border-l-[#a3e635] rounded-sm py-4 px-6 mb-8 relative overflow-hidden after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-r after:from-[#a3e635] after:to-transparent"
+    >
+        <div class="w-2 h-2 rounded-full bg-[#a3e635] shrink-0 animate-[pulse-dot_1.8s_ease-in-out_infinite]"></div>
+        <div class="font-techmono text-[0.82rem] tracking-[0.06em] text-[#bef264]">
+            LOGIN_SUCCESS · Halo, <strong class="text-[#e8edf5] font-normal"><%= username %></strong> — session aktif
+            dan siap digunakan.
         </div>
     </div>
 
-    <div class="dash-info">
-        <div class="dash-info-title">// session_info</div>
-        <div class="dash-info-row">
-            <span class="dash-info-key">administrator</span>
-            <span class="dash-info-val"><%= username %></span>
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4 mb-8">
+        <div
+            class="bg-[#0f1117] border border-border rounded py-5 px-6 relative overflow-hidden transition-all hover:border-[#2a3347] hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-linear-to-r before:from-cyan-bright before:to-transparent"
+        >
+            <div class="font-techmono text-[0.68rem] tracking-[0.14em] uppercase mb-3 text-cyan-bright">
+                ◈ Inventory
+            </div>
+            <div class="text-[0.85rem] text-text-muted tracking-[0.05em] mb-1 font-techmono">// modul aktif</div>
+            <div class="text-[1.6rem] font-bold text-[#e8edf5] tracking-[0.05em] leading-none">READ</div>
         </div>
-        <div class="dash-info-row">
-            <span class="dash-info-key">status</span>
-            <span class="dash-info-val-green">● ACTIVE</span>
+        <div
+            class="bg-[#0f1117] border border-border rounded py-5 px-6 relative overflow-hidden transition-all hover:border-[#2a3347] hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-linear-to-r before:from-[#a3e635] before:to-transparent"
+        >
+            <div class="font-techmono text-[0.68rem] tracking-[0.14em] uppercase mb-3 text-[#a3e635]">◈ Items</div>
+            <div class="text-[0.85rem] text-text-muted tracking-[0.05em] mb-1 font-techmono">// akses level</div>
+            <div class="text-[1.6rem] font-bold text-[#e8edf5] tracking-[0.05em] leading-none">CRUD</div>
         </div>
-        <div class="dash-info-row">
-            <span class="dash-info-key">role</span>
-            <span class="dash-info-val">ADMIN</span>
+        <div
+            class="bg-[#0f1117] border border-border rounded py-5 px-6 relative overflow-hidden transition-all hover:border-[#2a3347] hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-linear-to-r before:from-amber-bright before:to-transparent"
+        >
+            <div class="font-techmono text-[0.68rem] tracking-[0.14em] uppercase mb-3 text-amber-bright">◆ Limited</div>
+            <div class="text-[0.85rem] text-text-muted tracking-[0.05em] mb-1 font-techmono">// akses level</div>
+            <div class="text-[1.6rem] font-bold text-[#e8edf5] tracking-[0.05em] leading-none">CRUD</div>
         </div>
-        <div class="dash-info-row">
-            <span class="dash-info-key">akses route</span>
-            <span class="dash-info-val">FULL</span>
+        <div
+            class="bg-[#0f1117] border border-border rounded py-5 px-6 relative overflow-hidden transition-all hover:border-[#2a3347] hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-linear-to-r before:from-purple-bright before:to-transparent"
+        >
+            <div class="font-techmono text-[0.68rem] tracking-[0.14em] uppercase mb-3 text-purple-bright">◈ Users</div>
+            <div class="text-[0.85rem] text-text-muted tracking-[0.05em] mb-1 font-techmono">// akses level</div>
+            <div class="text-[1.6rem] font-bold text-[#e8edf5] tracking-[0.05em] leading-none">MGMT</div>
+        </div>
+    </div>
+
+    <div
+        class="bg-[#0f1117] border border-border rounded px-6 py-6 relative overflow-hidden after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-r after:from-cyan-bright after:via-purple-bright after:to-transparent"
+    >
+        <div class="font-techmono text-[0.75rem] text-cyan-bright tracking-[0.14em] uppercase m-0 mb-5">
+            // session_info
+        </div>
+        <div class="flex justify-between items-center py-2.5 border-b border-[#141720]">
+            <span class="font-techmono text-text-secondary tracking-[0.08em] uppercase">administrator</span>
+            <span class="text-[0.95rem] font-semibold text-text-secondary tracking-[0.04em]"><%= username %></span>
+        </div>
+        <div class="flex justify-between items-center py-2.5 border-b border-[#141720]">
+            <span class="font-techmono text-text-secondary tracking-[0.08em] uppercase">status</span>
+            <span class="text-[#a3e635] font-techmono text-[0.8rem]">● ACTIVE</span>
+        </div>
+        <div class="flex justify-between items-center py-2.5 border-b border-[#141720]">
+            <span class="font-techmono text-text-secondary tracking-[0.08em] uppercase">role</span>
+            <span class="text-[0.95rem] font-semibold text-text-secondary tracking-[0.04em]">ADMIN</span>
+        </div>
+        <div class="flex justify-between items-center py-2.5">
+            <span class="font-techmono text-text-secondary tracking-[0.08em] uppercase">akses route</span>
+            <span class="text-[0.95rem] font-semibold text-text-secondary tracking-[0.04em]">FULL</span>
         </div>
     </div>
 </section>

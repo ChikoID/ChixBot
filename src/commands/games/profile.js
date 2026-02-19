@@ -14,7 +14,7 @@ module.exports = {
         const user = await ensureUser(message);
         if (!user) return;
 
-        const inventory = await Inventory.getAllByUser(user.id) || 0;
+        const inventory = (await Inventory.getAllByUser(user.id)) || 0;
 
         const userName = user.name;
         const userChix = user.chix;
@@ -27,6 +27,8 @@ module.exports = {
 
         const streak = user.daily_streak || 0;
 
-        await message.reply(`👤 *Profil ${userName}* 👤\n\n💰 Saldo: $${userChix}\n🎒 Storage: ${totalItems}/${userStorage}\n🏆 Limited Items: ${totalLimited}\n🔥 Streak: ${streak}`);
-    }
-}
+        await message.reply(
+            `👤 *Profil ${userName}* 👤\n\n💰 Saldo: $${userChix}\n🎒 Storage: ${totalItems}/${userStorage}\n🏆 Limited Items: ${totalLimited}\n🔥 Streak: ${streak}`,
+        );
+    },
+};

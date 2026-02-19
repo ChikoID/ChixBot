@@ -2,26 +2,33 @@ const Item = require("../../models/item");
 
 // Seed data untuk item-item dalam game yang berisi sampah luar angkasa
 const items = [
-    // Common
-    { name: "plastic", price: 10, rarity: "common", dropRate: 10 },
-    { name: "paper", price: 5, rarity: "common", dropRate: 10 },
-    { name: "glass", price: 15, rarity: "common", dropRate: 10 },
-    { name: "metal", price: 20, rarity: "common", dropRate: 10 },
-    { name: "bottle", price: 15, rarity: "common", dropRate: 10 },
+    // Common (murah & sering ditemui)
+    { name: "plastic", price: 3, rarity: "common", dropRate: 10 },
+    { name: "paper", price: 2, rarity: "common", dropRate: 10 },
+    { name: "glass", price: 4, rarity: "common", dropRate: 10 },
+    { name: "metal", price: 5, rarity: "common", dropRate: 10 },
+    { name: "bottle", price: 3, rarity: "common", dropRate: 10 },
 
-    // Rare
-    { name: "panel", price: 60, rarity: "rare", dropRate: 4.8 },
-    { name: "cable", price: 55, rarity: "rare", dropRate: 4.8 },
-    { name: "casing", price: 70, rarity: "rare", dropRate: 4.8 },
-    { name: "circuit", price: 65, rarity: "rare", dropRate: 4.8 },
+    // Tambahan common
+    { name: "cardboard", price: 2, rarity: "common", dropRate: 10 },
+    { name: "tin", price: 4, rarity: "common", dropRate: 10 },
+    { name: "wrapper", price: 1, rarity: "common", dropRate: 10 },
+    { name: "rubber", price: 3, rarity: "common", dropRate: 10 },
+    { name: "fabric", price: 3, rarity: "common", dropRate: 10 },
 
-    // Epic
-    { name: "qchip", price: 220, rarity: "epic", dropRate: 0.6 },
-    { name: "alloy", price: 250, rarity: "epic", dropRate: 0.6 },
-    { name: "residue", price: 300, rarity: "epic", dropRate: 0.6 },
+    // Rare (mulai bernilai)
+    { name: "panel", price: 25, rarity: "rare", dropRate: 4.8 },
+    { name: "cable", price: 22, rarity: "rare", dropRate: 4.8 },
+    { name: "casing", price: 30, rarity: "rare", dropRate: 4.8 },
+    { name: "circuit", price: 28, rarity: "rare", dropRate: 4.8 },
 
-    // Legendary
-    { name: "chixcore", price: 1200, rarity: "legendary", dropRate: 0.12 },
+    // Epic (jarang & mahal)
+    { name: "qchip", price: 120, rarity: "epic", dropRate: 0.6 },
+    { name: "alloy", price: 140, rarity: "epic", dropRate: 0.6 },
+    { name: "residue", price: 160, rarity: "epic", dropRate: 0.6 },
+
+    // Legendary (super langka)
+    { name: "chixcore", price: 600, rarity: "legendary", dropRate: 0.12 },
 ];
 
 async function seedItems() {

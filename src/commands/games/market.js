@@ -99,10 +99,10 @@ module.exports = {
                 if (user.chix < buyTotal) {
                     return await message.reply(
                         `❌ Chix tidak cukup!\n\n` +
-                        `Harga item: ${formatNumber(buyPrice)} Chix\n` +
-                        `Fee: ${formatNumber(buyFee)} Chix\n` +
-                        `Total: ${formatNumber(buyTotal)} Chix\n` +
-                        `Kamu punya: ${formatNumber(user.chix)} Chix`
+                            `Harga item: ${formatNumber(buyPrice)} Chix\n` +
+                            `Fee: ${formatNumber(buyFee)} Chix\n` +
+                            `Total: ${formatNumber(buyTotal)} Chix\n` +
+                            `Kamu punya: ${formatNumber(user.chix)} Chix`,
                     );
                 }
 
@@ -117,12 +117,12 @@ module.exports = {
 
                 return await message.reply(
                     `✅ *Pembelian Berhasil!*\n\n` +
-                    `Item: ${itemToBuy.name}\n` +
-                    `Harga item: ${formatNumber(buyPrice)} Chix\n` +
-                    `Fee: ${formatNumber(buyFee)} Chix\n` +
-                    `Total: ${formatNumber(buyTotal)} Chix\n` +
-                    `Saldo: ${formatNumber(user.chix - buyTotal)} Chix\n\n` +
-                    `Stock tersisa: ${itemToBuy.quantity - 1}`
+                        `Item: ${itemToBuy.name}\n` +
+                        `Harga item: ${formatNumber(buyPrice)} Chix\n` +
+                        `Fee: ${formatNumber(buyFee)} Chix\n` +
+                        `Total: ${formatNumber(buyTotal)} Chix\n` +
+                        `Saldo: ${formatNumber(user.chix - buyTotal)} Chix\n\n` +
+                        `Stock tersisa: ${itemToBuy.quantity - 1}`,
                 );
 
             case "sell":
@@ -146,7 +146,7 @@ module.exports = {
                 // Harga jual = 80% dari harga dinamis saat ini
                 const currentPrice = await ItemLimited.getDynamicPrice(itemToSell);
                 const grossSellPrice = Math.floor(currentPrice * 0.8);
-                
+
                 const { feeMin: sFeeMin, feeMax: sFeMax } = getFeeBoundaries();
                 const sellFeeRate = getMarketSellFeeRate();
                 const { fee: sellFee } = applyFee(grossSellPrice, sellFeeRate, { minFee: sFeeMin, maxFee: sFeMax });
@@ -161,7 +161,7 @@ module.exports = {
                 } else {
                     await runAsync(
                         "UPDATE inventory SET quantity = quantity - 1, updated_at = datetime('now') WHERE id = ?",
-                        [userInventory.id]
+                        [userInventory.id],
                     );
                 }
 
@@ -170,12 +170,12 @@ module.exports = {
 
                 return await message.reply(
                     `✅ *Penjualan Berhasil!*\n\n` +
-                    `Item: ${itemToSell.name}\n` +
-                    `Harga item (80%): ${formatNumber(grossSellPrice)} Chix\n` +
-                    `Fee: ${formatNumber(sellFee)} Chix\n` +
-                    `Diterima: ${formatNumber(netSellPrice)} Chix\n` +
-                    `Saldo: ${formatNumber(user.chix + netSellPrice)} Chix\n\n` +
-                    `Stock market: ${itemToSell.quantity + 1}`
+                        `Item: ${itemToSell.name}\n` +
+                        `Harga item (80%): ${formatNumber(grossSellPrice)} Chix\n` +
+                        `Fee: ${formatNumber(sellFee)} Chix\n` +
+                        `Diterima: ${formatNumber(netSellPrice)} Chix\n` +
+                        `Saldo: ${formatNumber(user.chix + netSellPrice)} Chix\n\n` +
+                        `Stock market: ${itemToSell.quantity + 1}`,
                 );
 
             default:

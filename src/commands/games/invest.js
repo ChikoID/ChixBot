@@ -74,7 +74,8 @@ function planListText(prefix) {
 
 module.exports = {
     name: "invest",
-    description: "Menginvestasikan chix dengan pilihan durasi dan tingkat keuntungan tertentu, dengan risiko penalti jika terlambat melakukan penarikan.",
+    description:
+        "Menginvestasikan chix dengan pilihan durasi dan tingkat keuntungan tertentu, dengan risiko penalti jika terlambat melakukan penarikan.",
     aliases: ["investasi"],
     /**
      * @param {import("whatsapp-web.js").Message} message
@@ -93,8 +94,12 @@ module.exports = {
             case "buat": {
                 const amount = parseInt(args[1], 10);
                 const plan = findPlan(args[2]);
-                if (!Number.isFinite(amount) || amount <= 0) return await message.reply(`❌ Jumlah investasi tidak valid.\nContoh: ${prefix}invest create 1000 quick`);
-                if (!plan) return await message.reply(`❌ Plan tidak valid.\nPilih: quick, medium, long (atau 1h/6h/24h)`);
+                if (!Number.isFinite(amount) || amount <= 0)
+                    return await message.reply(
+                        `❌ Jumlah investasi tidak valid.\nContoh: ${prefix}invest create 1000 quick`,
+                    );
+                if (!plan)
+                    return await message.reply(`❌ Plan tidak valid.\nPilih: quick, medium, long (atau 1h/6h/24h)`);
 
                 const { feeMin, feeMax } = getFeeBoundaries();
                 const feeRate = getInvestFeeRate();
@@ -104,26 +109,39 @@ module.exports = {
                 if (user.chix < totalCost) {
                     return await message.reply(
                         `❌ Chix kamu tidak cukup untuk investasi.\n\n` +
-                        `Modal: ${formatNumber(amount)} Chix\n` +
-                        `Fee: ${formatNumber(investFee)} Chix\n` +
-                        `Total: ${formatNumber(totalCost)} Chix\n` +
-                        `Saldo kamu: ${formatNumber(user.chix)} Chix`
+                            `Modal: ${formatNumber(amount)} Chix\n` +
+                            `Fee: ${formatNumber(investFee)} Chix\n` +
+                            `Total: ${formatNumber(totalCost)} Chix\n` +
+                            `Saldo kamu: ${formatNumber(user.chix)} Chix`,
                     );
                 }
 
                 const active = await Investment.getByUser(user.id);
-                if (active) return await message.reply(`❌ Kamu masih punya investasi aktif. Gunakan ${prefix}invest status atau ${prefix}invest withdraw.`);
+                if (active)
+                    return await message.reply(
+                        `❌ Kamu masih punya investasi aktif. Gunakan ${prefix}invest status atau ${prefix}invest withdraw.`,
+                    );
                 await User.update(user.id, { chix: user.chix - totalCost });
                 const investment = await Investment.create(user.id, amount, plan.rate, plan.durationMinutes);
                 const snapshot = Investment.calculateSnapshot(investment, Date.now());
                 return await message.reply(
-                    `✅ Investasi dibuat!\n\n` + `Plan: ${plan.label} (${formatDuration(plan.durationMinutes)})\n` + `Modal: ${formatNumber(amount)} Chix\n` + `Rate: +${Math.round(plan.rate * 100)}%\n` + `Nilai saat jatuh tempo: ${formatNumber(snapshot.maturedValue)} Chix\n` + `Fee investasi: ${formatNumber(investFee)} Chix\n` + `Total bayar: ${formatNumber(totalCost)} Chix\n\n` + `Saldo tersisa: ${formatNumber(user.chix - totalCost)} Chix`,
+                    `✅ Investasi dibuat!\n\n` +
+                        `Plan: ${plan.label} (${formatDuration(plan.durationMinutes)})\n` +
+                        `Modal: ${formatNumber(amount)} Chix\n` +
+                        `Rate: +${Math.round(plan.rate * 100)}%\n` +
+                        `Nilai saat jatuh tempo: ${formatNumber(snapshot.maturedValue)} Chix\n` +
+                        `Fee investasi: ${formatNumber(investFee)} Chix\n` +
+                        `Total bayar: ${formatNumber(totalCost)} Chix\n\n` +
+                        `Saldo tersisa: ${formatNumber(user.chix - totalCost)} Chix`,
                 );
             }
             case "status":
             case "cek": {
                 const activeInvestment = await Investment.getByUser(user.id);
-                if (!activeInvestment) return await message.reply(`ℹ️ Tidak ada investasi aktif. Gunakan ${prefix}invest plans untuk lihat plan.`);
+                if (!activeInvestment)
+                    return await message.reply(
+                        `ℹ️ Tidak ada investasi aktif. Gunakan ${prefix}invest plans untuk lihat plan.`,
+                    );
 
                 const snapshot = Investment.calculateSnapshot(activeInvestment, Date.now());
                 if (!snapshot.isMatured) {
@@ -157,13 +175,21 @@ module.exports = {
                 if (!activeInvestment) return await message.reply("❌ Tidak ada investasi aktif untuk ditarik.");
 
                 const snapshot = Investment.calculateSnapshot(activeInvestment, Date.now());
-                if (!snapshot.isMatured) return await message.reply(`⏳ Investasi belum jatuh tempo. Sisa waktu: ${formatRelative(snapshot.remainingMs)}`);
+                if (!snapshot.isMatured)
+                    return await message.reply(
+                        `⏳ Investasi belum jatuh tempo. Sisa waktu: ${formatRelative(snapshot.remainingMs)}`,
+                    );
 
                 const newBalance = Number(user.chix || 0) + snapshot.withdrawValue;
                 await User.update(user.id, { chix: newBalance });
                 await Investment.delete(activeInvestment.id);
                 return await message.reply(
-                    `💸 Investasi berhasil ditarik!\n\n` + `Modal: ${formatNumber(snapshot.principal)} Chix\n` + `Nilai jatuh tempo: ${formatNumber(snapshot.maturedValue)} Chix\n` + `Diterima: ${formatNumber(snapshot.withdrawValue)} Chix\n` + `Step penalti: ${snapshot.penaltySteps}\n\n` + `Saldo sekarang: ${formatNumber(newBalance)} Chix`,
+                    `💸 Investasi berhasil ditarik!\n\n` +
+                        `Modal: ${formatNumber(snapshot.principal)} Chix\n` +
+                        `Nilai jatuh tempo: ${formatNumber(snapshot.maturedValue)} Chix\n` +
+                        `Diterima: ${formatNumber(snapshot.withdrawValue)} Chix\n` +
+                        `Step penalti: ${snapshot.penaltySteps}\n\n` +
+                        `Saldo sekarang: ${formatNumber(newBalance)} Chix`,
                 );
             }
             default:

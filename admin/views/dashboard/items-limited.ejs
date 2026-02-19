@@ -1,367 +1,62 @@
-<style>
-    @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
-
-    .lim-section {
-        font-family: "Rajdhani", sans-serif;
-        background: #0a0c10;
-        min-height: 100vh;
-        padding: 2.5rem 2rem;
-        color: #c9d1e0;
-    }
-
-    .lim-header {
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-        margin-bottom: 2rem;
-        position: relative;
-        padding-left: 1.2rem;
-    }
-
-    .lim-header::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        background: linear-gradient(180deg, #f59e0b, #ef4444);
-        border-radius: 2px;
-    }
-
-    .lim-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: #e8edf5;
-        margin: 0;
-        line-height: 1;
-    }
-
-    .lim-header h1 span {
-        color: #f59e0b;
-    }
-
-    .lim-header p {
-        font-size: 0.85rem;
-        color: #6b7a94;
-        letter-spacing: 0.05em;
-        margin: 0;
-        font-family: "Share Tech Mono", monospace;
-    }
-
-    .lim-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.7rem;
-        font-family: "Share Tech Mono", monospace;
-        letter-spacing: 0.1em;
-        color: #f59e0b;
-        background: rgba(245, 158, 11, 0.08);
-        border: 1px solid rgba(245, 158, 11, 0.25);
-        padding: 0.25rem 0.75rem;
-        border-radius: 2px;
-        width: fit-content;
-        margin-bottom: 1.5rem;
-    }
-
-    .lim-alert {
-        padding: 0.8rem 1.2rem;
-        border-radius: 3px;
-        font-size: 0.85rem;
-        font-family: "Share Tech Mono", monospace;
-        letter-spacing: 0.04em;
-        margin-bottom: 1.25rem;
-        border-left: 3px solid;
-    }
-
-    .lim-alert-error {
-        background: rgba(239, 68, 68, 0.08);
-        border-color: #ef4444;
-        color: #fca5a5;
-    }
-
-    .lim-alert-success {
-        background: rgba(245, 158, 11, 0.08);
-        border-color: #f59e0b;
-        color: #fde68a;
-    }
-
-    .lim-panel {
-        background: #0f1117;
-        border: 1px solid #1e2535;
-        border-radius: 4px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .lim-panel::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #f59e0b, #ef4444, transparent);
-    }
-
-    .lim-panel h2 {
-        margin: 0 0 1.2rem 0;
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.85rem;
-        color: #f59e0b;
-        letter-spacing: 0.1em;
-    }
-
-    .lim-form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-    }
-
-    @media (max-width: 640px) {
-        .lim-form-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .lim-input {
-        background: #141720;
-        border: 1px solid #1e2535;
-        border-radius: 3px;
-        padding: 0.65rem 1rem;
-        color: #e8edf5;
-        font-family: "Rajdhani", sans-serif;
-        font-size: 0.95rem;
-        font-weight: 500;
-        width: 100%;
-        box-sizing: border-box;
-        outline: none;
-        transition: border-color 0.2s;
-    }
-
-    .lim-input:focus {
-        border-color: #f59e0b;
-        box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.08);
-    }
-
-    .lim-input::placeholder {
-        color: #3d4a5c;
-    }
-
-    .lim-btn-row {
-        grid-column: 1 / -1;
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
-    }
-
-    .lim-btn-primary {
-        background: #f59e0b;
-        color: #0a0c10;
-        border: none;
-        padding: 0.6rem 1.5rem;
-        border-radius: 3px;
-        font-family: "Rajdhani", sans-serif;
-        font-weight: 700;
-        font-size: 0.95rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition:
-            background 0.15s,
-            transform 0.1s;
-    }
-
-    .lim-btn-primary:hover {
-        background: #fbbf24;
-        transform: translateY(-1px);
-    }
-
-    .lim-btn-cancel {
-        background: transparent;
-        border: 1px solid #1e2535;
-        color: #6b7a94;
-        padding: 0.6rem 1.2rem;
-        border-radius: 3px;
-        font-family: "Rajdhani", sans-serif;
-        font-size: 0.95rem;
-        text-decoration: none;
-        letter-spacing: 0.05em;
-        transition:
-            border-color 0.15s,
-            color 0.15s;
-    }
-
-    .lim-btn-cancel:hover {
-        border-color: #6b7a94;
-        color: #c9d1e0;
-    }
-
-    .lim-table-wrap {
-        background: #0f1117;
-        border: 1px solid #1e2535;
-        border-radius: 4px;
-        overflow-x: auto;
-        position: relative;
-    }
-
-    .lim-table-wrap::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #f59e0b, #ef4444, transparent);
-    }
-
-    .lim-table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 580px;
-    }
-
-    .lim-table thead {
-        background: #141720;
-    }
-
-    .lim-table thead th {
-        padding: 0.9rem 1.2rem;
-        text-align: left;
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.68rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: #f59e0b;
-        font-weight: 400;
-        border-bottom: 1px solid #1e2535;
-    }
-
-    .lim-table tbody tr {
-        border-bottom: 1px solid #141720;
-        transition: background 0.15s;
-    }
-
-    .lim-table tbody tr:hover {
-        background: rgba(245, 158, 11, 0.03);
-    }
-
-    .lim-table tbody td {
-        padding: 0.85rem 1.2rem;
-        color: #c9d1e0;
-        font-size: 0.95rem;
-        font-weight: 500;
-    }
-
-    .lim-table tbody td:first-child {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.78rem;
-        color: #4a5568;
-    }
-
-    .uid-cell {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.78rem;
-        color: #f59e0b;
-        letter-spacing: 0.05em;
-    }
-
-    .price-cell {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.82rem;
-        color: #a3e635;
-    }
-
-    .qty-cell {
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.85rem;
-        color: #00e5ff;
-    }
-
-    .lim-empty {
-        text-align: center;
-        padding: 3rem 1.2rem;
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.78rem;
-        color: #2d3748;
-        letter-spacing: 0.08em;
-    }
-
-    .action-edit {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 2px;
-        background: rgba(234, 179, 8, 0.12);
-        border: 1px solid rgba(234, 179, 8, 0.28);
-        color: #fbbf24;
-        font-size: 0.78rem;
-        font-family: "Share Tech Mono", monospace;
-        text-decoration: none;
-        transition: background 0.15s;
-    }
-
-    .action-edit:hover {
-        background: rgba(234, 179, 8, 0.22);
-    }
-
-    .action-delete {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 2px;
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.22);
-        color: #f87171;
-        font-size: 0.78rem;
-        font-family: "Share Tech Mono", monospace;
-        cursor: pointer;
-        transition: background 0.15s;
-    }
-
-    .action-delete:hover {
-        background: rgba(239, 68, 68, 0.2);
-    }
-</style>
-
-<section class="lim-section">
-    <div class="lim-header">
-        <h1>ITEMS <span>LIMITED</span></h1>
-        <p>// crud · item eksklusif & limited edition</p>
+<section class="font-rajdhani bg-[#0a0c10] min-h-screen py-10 px-8 text-text-secondary">
+    <div
+        class="flex flex-col gap-1.5 mb-8 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-0.5 before:bg-linear-to-b before:from-amber-bright before:to-red-bright before:rounded-sm"
+    >
+        <h1 class="text-[2rem] font-bold tracking-[0.12em] uppercase text-[#e8edf5] m-0 leading-none">
+            ITEMS <span class="text-amber-bright">LIMITED</span>
+        </h1>
+        <p class="text-[0.85rem] text-text-muted tracking-[0.05em] m-0 font-techmono">
+            // crud · item eksklusif & limited edition
+        </p>
     </div>
 
-    <div class="lim-tag">◆ LIMITED EDITION ONLY</div>
+    <div
+        class="inline-flex items-center gap-2 text-[0.7rem] font-techmono tracking-widest text-amber-bright bg-[rgba(245,158,11,0.08)] border border-[rgba(245,158,11,0.25)] py-1 px-3 rounded-xs w-fit mb-6"
+    >
+        ◆ LIMITED EDITION ONLY
+    </div>
 
     <% if (error) { %>
-    <div class="lim-alert lim-alert-error">⚠ <%= error %></div>
+    <div
+        class="py-3 px-5 rounded-sm text-[0.85rem] font-techmono tracking-[0.04em] mb-5 border-l-[3px] bg-[rgba(239,68,68,0.08)] border-l-red-bright text-[#fca5a5]"
+    >
+        ⚠
+        <%= error %>
+    </div>
     <% } %>
     <% if (success) { %>
-    <div class="lim-alert lim-alert-success">✓ <%= success %></div>
+    <div
+        class="py-3 px-5 rounded-sm text-[0.85rem] font-techmono tracking-[0.04em] mb-5 border-l-[3px] bg-[rgba(245,158,11,0.08)] border-l-amber-bright text-[#fde68a]"
+    >
+        ✓
+        <%= success %>
+    </div>
     <% } %>
 
-    <div class="lim-panel">
-        <h2><%= editItem ? '// EDIT_LIMITED_ITEM' : '// ADD_LIMITED_ITEM' %></h2>
+    <div
+        class="bg-[#0f1117] border border-border rounded px-6 py-6 mb-6 relative overflow-hidden after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-r after:from-amber-bright after:via-red-bright after:to-transparent"
+    >
+        <h2 class="m-0 mb-5 font-techmono text-[0.85rem] text-amber-bright tracking-widest">
+            <%= editItem ? '// EDIT_LIMITED_ITEM' : '// ADD_LIMITED_ITEM' %>
+        </h2>
         <form method="POST" action="<%= editItem ? `/items-limited/${editItem.id}/update` : '/items-limited/create' %>">
-            <div class="lim-form-grid">
+            <div class="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
                 <input
-                    class="lim-input"
+                    class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-amber-bright focus:shadow-[0_0_0_2px_rgba(245,158,11,0.08)] placeholder:text-[#3d4a5c]"
                     name="unique_id"
                     placeholder="Unique ID"
                     value="<%= editItem ? editItem.unique_id : '' %>"
                     required
                 />
                 <input
-                    class="lim-input"
+                    class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-amber-bright focus:shadow-[0_0_0_2px_rgba(245,158,11,0.08)] placeholder:text-[#3d4a5c]"
                     name="name"
                     placeholder="Nama Item"
                     value="<%= editItem ? editItem.name : '' %>"
                     required
                 />
                 <input
-                    class="lim-input"
+                    class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-amber-bright focus:shadow-[0_0_0_2px_rgba(245,158,11,0.08)] placeholder:text-[#3d4a5c]"
                     name="price"
                     type="number"
                     placeholder="Harga"
@@ -369,58 +64,120 @@
                     required
                 />
                 <input
-                    class="lim-input"
+                    class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-amber-bright focus:shadow-[0_0_0_2px_rgba(245,158,11,0.08)] placeholder:text-[#3d4a5c]"
                     name="quantity"
                     type="number"
                     placeholder="Quantity"
                     value="<%= editItem ? editItem.quantity : '' %>"
                     required
                 />
-                <div class="lim-btn-row">
-                    <button type="submit" class="lim-btn-primary"><%= editItem ? 'Update' : 'Tambah' %></button>
+                <div class="col-span-full flex gap-3 items-center max-sm:col-span-1">
+                    <button
+                        type="submit"
+                        class="bg-amber-bright text-[#0a0c10] border-none py-2.5 px-6 rounded-sm font-rajdhani font-bold text-[0.95rem] tracking-[0.08em] uppercase cursor-pointer transition-all hover:bg-[#fbbf24] hover:-translate-y-px"
+                    >
+                        <%= editItem ? 'Update' : 'Tambah' %>
+                    </button>
                     <% if (editItem) { %>
-                    <a href="/items-limited" class="lim-btn-cancel">Batal</a>
+                    <a
+                        href="/items-limited"
+                        class="bg-transparent border border-border text-text-muted py-2.5 px-5 rounded-sm font-rajdhani text-[0.95rem] no-underline tracking-[0.05em] transition-colors hover:border-muted hover:text-text-secondary"
+                    >
+                        Batal
+                    </a>
                     <% } %>
                 </div>
             </div>
         </form>
     </div>
 
-    <div class="lim-table-wrap">
-        <table class="lim-table">
-            <thead>
+    <div
+        class="bg-[#0f1117] border border-border rounded overflow-x-auto relative before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-linear-to-r before:from-amber-bright before:via-red-bright before:to-transparent"
+    >
+        <table class="w-full border-collapse min-w-145">
+            <thead class="bg-[#141720]">
                 <tr>
-                    <th>#ID</th>
-                    <th>Unique ID</th>
-                    <th>Nama</th>
-                    <th>Harga</th>
-                    <th>Qty</th>
-                    <th>Aksi</th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-amber-bright font-normal border-b border-border"
+                    >
+                        #ID
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-amber-bright font-normal border-b border-border"
+                    >
+                        Unique ID
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-amber-bright font-normal border-b border-border"
+                    >
+                        Nama
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-amber-bright font-normal border-b border-border"
+                    >
+                        Harga
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-amber-bright font-normal border-b border-border"
+                    >
+                        Qty
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-amber-bright font-normal border-b border-border"
+                    >
+                        Aksi
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 <% if (!items || items.length === 0) { %>
                 <tr>
-                    <td colspan="6"><div class="lim-empty">// NO_LIMITED_ITEMS · belum ada item limited</div></td>
+                    <td colspan="6" class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium">
+                        <div
+                            class="text-center py-12 px-5 font-techmono text-[0.78rem] text-text-darker tracking-[0.08em]"
+                        >
+                            // NO_LIMITED_ITEMS · belum ada item limited
+                        </div>
+                    </td>
                 </tr>
                 <% } %>
                 <% if (items && items.length > 0) { %> <% items.forEach((item) => { %>
-                <tr>
-                    <td><%= item.id %></td>
-                    <td class="uid-cell"><%= item.unique_id %></td>
-                    <td><%= item.name %></td>
-                    <td class="price-cell"><%= item.price %></td>
-                    <td class="qty-cell"><%= item.quantity %></td>
-                    <td>
-                        <div style="display: flex; gap: 0.5rem; align-items: center">
-                            <a href="/items-limited/<%= item.id %>/edit" class="action-edit">Edit</a>
+                <tr class="border-b border-[#141720] transition-colors hover:bg-[rgba(245,158,11,0.03)]">
+                    <td class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium font-techmono">
+                        <%= item.id %>
+                    </td>
+                    <td
+                        class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium font-techmono tracking-[0.05em]"
+                    >
+                        <%= item.unique_id %>
+                    </td>
+                    <td class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium"><%= item.name %></td>
+                    <td class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium font-techmono">
+                        <%= item.price %>
+                    </td>
+                    <td class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium font-techmono">
+                        <%= item.quantity %>
+                    </td>
+                    <td class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium">
+                        <div class="flex gap-2 items-center">
+                            <a
+                                href="/items-limited/<%= item.id %>/edit"
+                                class="inline-block py-1 px-3 rounded-xs bg-[rgba(234,179,8,0.12)] border border-[rgba(234,179,8,0.28)] text-[#fbbf24] text-[0.78rem] font-techmono no-underline transition-colors hover:bg-[rgba(234,179,8,0.22)]"
+                            >
+                                Edit
+                            </a>
                             <form
                                 method="POST"
                                 action="/items-limited/<%= item.id %>/delete"
                                 onsubmit="return confirm('Hapus item limited ini?');"
-                                style="margin: 0"
+                                class="m-0"
                             >
-                                <button type="submit" class="action-delete">Hapus</button>
+                                <button
+                                    type="submit"
+                                    class="inline-block py-1 px-3 rounded-xs bg-[rgba(239,68,68,0.1)] border border-[rgba(239,68,68,0.22)] text-button-accent text-[0.78rem] font-techmono cursor-pointer transition-colors hover:bg-[rgba(239,68,68,0.2)]"
+                                >
+                                    Hapus
+                                </button>
                             </form>
                         </div>
                     </td>

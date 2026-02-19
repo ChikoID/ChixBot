@@ -9,7 +9,7 @@ module.exports = {
             quantity INTEGER DEFAULT 0,
             created_at TEXT DEFAULT (datetime('now')),
             updated_at TEXT DEFAULT (datetime('now'))
-            )`)
+            )`);
     },
     async down({ runAsync }) {},
-}
+};

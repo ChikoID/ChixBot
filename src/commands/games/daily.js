@@ -21,7 +21,9 @@ module.exports = {
 
         if (timeDiff < oneDay) {
             const hoursLeft = Math.ceil((oneDay - timeDiff) / (60 * 60 * 1000));
-            return await message.reply(`Kamu sudah mengklaim bonus harian hari ini! Kembali dalam ${hoursLeft} jam untuk klaim berikutnya.`);
+            return await message.reply(
+                `Kamu sudah mengklaim bonus harian hari ini! Kembali dalam ${hoursLeft} jam untuk klaim berikutnya.`,
+            );
         }
 
         let dailyReward = Math.floor(Math.random() * 1000) + 500; // Random reward antara 500-1500 chix
@@ -31,9 +33,11 @@ module.exports = {
         await User.update(user.id, {
             chix: newChix,
             daily_streak: newStreak,
-            daily_streak_date: now
+            daily_streak_date: now,
         });
 
-        await message.reply(`🎁 Kamu telah mengklaim bonus harian sebesar ${dailyReward} chix!\n🔥 Streak kamu sekarang: ${newStreak}`);
+        await message.reply(
+            `🎁 Kamu telah mengklaim bonus harian sebesar ${dailyReward} chix!\n🔥 Streak kamu sekarang: ${newStreak}`,
+        );
     },
 };

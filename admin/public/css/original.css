@@ -2,6 +2,7 @@
 
 @source "../../views/*.ejs";
 @source "../../views/partials/*.ejs";
+@source "../../views/dashboard/*.ejs";
 
 @theme {
     --color-primary: #0a0c10;
@@ -11,8 +12,30 @@
     --color-button-accent: #f87171;
     --color-border: #1e2535;
     --color-card: #0f1117;
+
+    --color-cyan-bright: #00e5ff;
+    --color-lime-bright: #a3e635;
+    --color-amber-bright: #f59e0b;
+    --color-purple-bright: #a78bfa;
+    --color-pink-bright: #ec4899;
+    --color-red-bright: #ef4444;
+
+    --color-text-primary: #e8edf5;
+    --color-text-secondary: #c9d1e0;
+    --color-text-text-muted: #6b7a94;
+    --color-text-dark: #4a5568;
+    --color-text-darker: #2d3748;
+
+    --color-bg-primary: #0a0c10;
+    --color-bg-secondary: #0f1117;
+    --color-bg-tertiary: #141720;
+
     --font-rajdhani: "Rajdhani", sans-serif;
     --font-techmono: "Share Tech Mono", monospace;
+
+    --radius-xs: 2px;
+    --radius-sm: 3px;
+    --radius-md: 4px;
 }
 
 @layer components {

@@ -28,6 +28,7 @@
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (atau runtime yang kamu pakai)
 - Database (opsional jika ada sistem persistence)
 
@@ -40,6 +41,7 @@ npm install
 ```
 
 ### Run
+
 ```bash
 npm start
 ```

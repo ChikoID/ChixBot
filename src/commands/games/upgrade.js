@@ -121,10 +121,10 @@ module.exports = {
                 if (currentBalance < totalCost) {
                     return await message.reply(
                         `❌ Chix tidak cukup untuk upgrade speed.` +
-                        `\nHarga upgrade: ${formatNumber(nextCost)} Chix` +
-                        `\nFee: ${formatNumber(fee)} Chix` +
-                        `\nTotal: ${formatNumber(totalCost)} Chix` +
-                        `\nSaldo kamu: ${formatNumber(currentBalance)} Chix`,
+                            `\nHarga upgrade: ${formatNumber(nextCost)} Chix` +
+                            `\nFee: ${formatNumber(fee)} Chix` +
+                            `\nTotal: ${formatNumber(totalCost)} Chix` +
+                            `\nSaldo kamu: ${formatNumber(currentBalance)} Chix`,
                     );
                 }
 
@@ -140,12 +140,12 @@ module.exports = {
 
                 return await message.reply(
                     `⚡ *Upgrade Speed Berhasil!*` +
-                    `\nLevel speed: ${currentLevel} -> ${nextLevel}` +
-                    `\nSpeed multiplier: x${oldMultiplier.toFixed(2)} -> x${newMultiplier.toFixed(2)}` +
-                    `\nHarga: ${formatNumber(nextCost)} Chix` +
-                    `\nFee: ${formatNumber(fee)} Chix` +
-                    `\nTotal bayar: ${formatNumber(totalCost)} Chix` +
-                    `\nSaldo sekarang: ${formatNumber(newBalance)} Chix`,
+                        `\nLevel speed: ${currentLevel} -> ${nextLevel}` +
+                        `\nSpeed multiplier: x${oldMultiplier.toFixed(2)} -> x${newMultiplier.toFixed(2)}` +
+                        `\nHarga: ${formatNumber(nextCost)} Chix` +
+                        `\nFee: ${formatNumber(fee)} Chix` +
+                        `\nTotal bayar: ${formatNumber(totalCost)} Chix` +
+                        `\nSaldo sekarang: ${formatNumber(newBalance)} Chix`,
                 );
             }
 
@@ -168,10 +168,10 @@ module.exports = {
                 if (currentBalance < totalCost) {
                     return await message.reply(
                         `❌ Chix tidak cukup untuk upgrade backpack.` +
-                        `\nHarga upgrade: ${formatNumber(nextCost)} Chix` +
-                        `\nFee: ${formatNumber(fee)} Chix` +
-                        `\nTotal: ${formatNumber(totalCost)} Chix` +
-                        `\nSaldo kamu: ${formatNumber(currentBalance)} Chix`,
+                            `\nHarga upgrade: ${formatNumber(nextCost)} Chix` +
+                            `\nFee: ${formatNumber(fee)} Chix` +
+                            `\nTotal: ${formatNumber(totalCost)} Chix` +
+                            `\nSaldo kamu: ${formatNumber(currentBalance)} Chix`,
                     );
                 }
 
@@ -184,12 +184,12 @@ module.exports = {
 
                 return await message.reply(
                     `🎒 *Upgrade Backpack Berhasil!*` +
-                    `\nLevel backpack: ${currentBackpackLevel} -> ${nextBackpackLevel}` +
-                    `\nStorage cap: ${formatNumber(currentStorageCap)} -> ${formatNumber(nextStorageCap)}` +
-                    `\nHarga: ${formatNumber(nextCost)} Chix` +
-                    `\nFee: ${formatNumber(fee)} Chix` +
-                    `\nTotal bayar: ${formatNumber(totalCost)} Chix` +
-                    `\nSaldo sekarang: ${formatNumber(newBalance)} Chix`,
+                        `\nLevel backpack: ${currentBackpackLevel} -> ${nextBackpackLevel}` +
+                        `\nStorage cap: ${formatNumber(currentStorageCap)} -> ${formatNumber(nextStorageCap)}` +
+                        `\nHarga: ${formatNumber(nextCost)} Chix` +
+                        `\nFee: ${formatNumber(fee)} Chix` +
+                        `\nTotal bayar: ${formatNumber(totalCost)} Chix` +
+                        `\nSaldo sekarang: ${formatNumber(newBalance)} Chix`,
                 );
             }
 
@@ -209,36 +209,39 @@ module.exports = {
                 const nextStorageCap = currentStorageCap + backpackPerLevel;
                 const backpackCost = getNextBackpackUpgradeCost(backpackLevel);
                 const backpackFeeRate = getBackpackFeeRate();
-                const { fee: backpackFee } = applyFee(backpackCost, backpackFeeRate, { minFee: feeMin, maxFee: feeMax });
+                const { fee: backpackFee } = applyFee(backpackCost, backpackFeeRate, {
+                    minFee: feeMin,
+                    maxFee: feeMax,
+                });
                 const backpackTotal = backpackCost + backpackFee;
 
                 return await message.reply(
                     `📌 *Upgrade Info*` +
-                    `\nSaldo kamu: ${formatNumber(user.chix)} Chix` +
-                    `\n\n⚡ *Speed*` +
-                    `\nLevel: ${speedLevel}` +
-                    `\nMultiplier: x${currentSpeedMultiplier.toFixed(2)} -> x${nextSpeedMultiplier.toFixed(2)}` +
-                    `\nHarga: ${formatNumber(speedCost)} Chix` +
-                    `\nFee: ${formatNumber(speedFee)} Chix` +
-                    `\nTotal: ${formatNumber(speedTotal)} Chix` +
-                    `\nGunakan: \`${prefix}upgrade speed\`` +
-                    `\n\n🎒 *Backpack*` +
-                    `\nLevel: ${backpackLevel}` +
-                    `\nStorage cap: ${formatNumber(currentStorageCap)} -> ${formatNumber(nextStorageCap)}` +
-                    `\nHarga: ${formatNumber(backpackCost)} Chix` +
-                    `\nFee: ${formatNumber(backpackFee)} Chix` +
-                    `\nTotal: ${formatNumber(backpackTotal)} Chix` +
-                    `\nGunakan: \`${prefix}upgrade backpack\``,
+                        `\nSaldo kamu: ${formatNumber(user.chix)} Chix` +
+                        `\n\n⚡ *Speed*` +
+                        `\nLevel: ${speedLevel}` +
+                        `\nMultiplier: x${currentSpeedMultiplier.toFixed(2)} -> x${nextSpeedMultiplier.toFixed(2)}` +
+                        `\nHarga: ${formatNumber(speedCost)} Chix` +
+                        `\nFee: ${formatNumber(speedFee)} Chix` +
+                        `\nTotal: ${formatNumber(speedTotal)} Chix` +
+                        `\nGunakan: \`${prefix}upgrade speed\`` +
+                        `\n\n🎒 *Backpack*` +
+                        `\nLevel: ${backpackLevel}` +
+                        `\nStorage cap: ${formatNumber(currentStorageCap)} -> ${formatNumber(nextStorageCap)}` +
+                        `\nHarga: ${formatNumber(backpackCost)} Chix` +
+                        `\nFee: ${formatNumber(backpackFee)} Chix` +
+                        `\nTotal: ${formatNumber(backpackTotal)} Chix` +
+                        `\nGunakan: \`${prefix}upgrade backpack\``,
                 );
             }
 
             default:
                 return await message.reply(
                     `❌ Pilihan upgrade tidak valid.` +
-                    `\nGunakan:` +
-                    `\n- \`${prefix}upgrade speed\`` +
-                    `\n- \`${prefix}upgrade backpack\`` +
-                    `\n- \`${prefix}upgrade info\``,
+                        `\nGunakan:` +
+                        `\n- \`${prefix}upgrade speed\`` +
+                        `\n- \`${prefix}upgrade backpack\`` +
+                        `\n- \`${prefix}upgrade info\``,
                 );
         }
     },
