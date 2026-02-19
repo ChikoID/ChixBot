@@ -1,7 +1,7 @@
 const User = require("../../models/user");
 
-async function ensureUser(message) {
-    const rawId = message.author || message.from;
+async function ensureUser(message, targetUserId = null) {
+    const rawId = targetUserId || message.author || message.from;
     const userId = rawId.split("@")[0];
     const user = await User.getByPhone(userId);
 

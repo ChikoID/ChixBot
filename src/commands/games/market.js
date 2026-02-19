@@ -48,6 +48,8 @@ module.exports = {
         const user = await ensureUser(message);
         if (!user) return;
 
+        const prefix = process.env.PREFIX || "!";
+
         const subcommand = args[0]?.toLowerCase();
         if (!subcommand) {
             return await message.reply("Gunakan subcommand: `list`, `buy <unique_id>`, atau `sell <unique_id>`");
@@ -71,14 +73,16 @@ module.exports = {
                     lines.push(`💰 ${dynamicPrice} Chix | ${stockInfo}`);
                     lines.push("");
                 }
-                lines.push("Gunakan `!market buy <unique_id>` untuk membeli");
+                lines.push(`Gunakan \`${prefix}market buy <unique_id>\` untuk membeli`);
                 return await message.reply(lines.join("\n"));
 
             case "buy":
             case "b":
                 const buyUniqueId = args[1];
                 if (!buyUniqueId) {
-                    return await message.reply("❌ Masukkan unique_id item!\nContoh: `!market buy COM-UNK-001`");
+                    return await message.reply(
+                        "❌ Masukkan unique_id item!\nContoh: `${prefix}market buy COM-UNK-001`",
+                    );
                 }
 
                 const itemToBuy = await ItemLimited.getByUniqueId(buyUniqueId.toUpperCase());
@@ -129,7 +133,9 @@ module.exports = {
             case "s":
                 const sellUniqueId = args[1];
                 if (!sellUniqueId) {
-                    return await message.reply("❌ Masukkan unique_id item!\nContoh: `!market sell COM-UNK-001`");
+                    return await message.reply(
+                        "❌ Masukkan unique_id item!\nContoh: `${prefix}market sell COM-UNK-001`",
+                    );
                 }
 
                 const itemToSell = await ItemLimited.getByUniqueId(sellUniqueId.toUpperCase());

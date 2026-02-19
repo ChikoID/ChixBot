@@ -11,7 +11,10 @@ module.exports = {
      * @param {string[]} args
      */
     async execute(message, client, args) {
-        const user = await ensureUser(message);
+        const mentionedId = message.mentionedIds?.[0];
+        const targetUserId = mentionedId || message.author || message.from;
+
+        const user = await ensureUser(message, targetUserId);
         if (!user) return;
 
         const inventory = (await Inventory.getAllByUser(user.id)) || 0;
@@ -22,7 +25,7 @@ module.exports = {
         const filteredInventory = inventory.filter((inv) => inv.item_type === "items");
         const totalItems = filteredInventory.reduce((sum, inv) => sum + inv.quantity, 0);
 
-        const LimitedItems = filteredInventory.filter((inv) => inv.item_type === "limited");
+        const LimitedItems = inventory.filter((inv) => inv.item_type === "items_limited");
         const totalLimited = LimitedItems.reduce((sum, inv) => sum + inv.quantity, 0);
 
         const streak = user.daily_streak || 0;
