@@ -3,7 +3,7 @@ const { ensureUser } = require("../../shared/utility/ensureUser");
 
 module.exports = {
     name: "flip",
-    description: "Mengikuti undian untuk memenangkan hadiah menarik dengan biaya tertentu.",
+    description: "Mengikuti permainan flip coin untuk memenangkan hadiah menarik dengan biaya tertentu.",
     aliases: ["flipcoin"],
     /**
      * @param {import("whatsapp-web.js").Message} message

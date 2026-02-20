@@ -1,0 +1,248 @@
+<section class="font-rajdhani bg-[#0a0c10] min-h-screen py-10 px-8 text-text-secondary">
+    <div
+        class="flex flex-col gap-1.5 mb-8 relative pl-5 before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-0.5 before:bg-linear-to-b before:from-[#35b1e6] before:to-purple-bright before:rounded-sm"
+    >
+        <h1 class="text-[2rem] font-bold tracking-[0.12em] uppercase text-[#e8edf5] m-0 leading-none">
+            CARDS <span class="text-[#35b1e6]">MGMT</span>
+        </h1>
+        <p class="text-[0.85rem] text-text-muted tracking-[0.05em] m-0 font-techmono">
+            // crud · cards premium x reguler
+        </p>
+    </div>
+
+    <% if (error) { %>
+    <div
+        class="py-3 px-5 rounded-sm text-[0.85rem] font-techmono tracking-[0.04em] mb-5 border-l-[3px] bg-[rgba(239,68,68,0.08)] border-l-red-bright text-[#fca5a5]"
+    >
+        ⚠
+        <%= error %>
+    </div>
+    <% } %>
+    <% if (success) { %>
+    <div
+        class="py-3 px-5 rounded-sm text-[0.85rem] font-techmono tracking-[0.04em] mb-5 border-l-[3px] bg-[rgba(163,230,53,0.08)] border-l-[#35b1e6] text-[#bef264]"
+    >
+        ✓
+        <%= success %>
+    </div>
+    <% } %>
+
+    <div
+        class="bg-[#0f1117] border border-border rounded px-6 py-6 mb-6 relative overflow-hidden after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-r after:from-[#35b1e6] after:via-purple-bright after:to-transparent"
+    >
+        <h2 class="font-bold tracking-widest uppercase text-[#35b1e6] m-0 mb-5 font-techmono text-[0.85rem]">
+            <%= editCard ? '// EDIT_CARD' : '// ADD_CARD' %>
+        </h2>
+        <form
+            method="POST"
+            action="<%= editCard ? `/cards/${editCard.id}/update` : '/cards/create' %>"
+            enctype="multipart/form-data"
+        >
+            <div class="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+                <input
+                    class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-[#35b1e6] focus:shadow-[0_0_0_2px_rgba(163,230,53,0.08)] placeholder:text-[#3d4a5c]"
+                    name="name"
+                    placeholder="Nama Kartu"
+                    value="<%= editCard ? editCard.name : '' %>"
+                    required
+                />
+                <input
+                    class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-[#35b1e6] focus:shadow-[0_0_0_2px_rgba(163,230,53,0.08)] placeholder:text-[#3d4a5c]"
+                    name="price"
+                    type="number"
+                    placeholder="Harga kartu"
+                    value="<%= editCard ? editCard.price : '' %>"
+                    required
+                />
+                <select
+                    name="rarity"
+                    class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-[#35b1e6] focus:shadow-[0_0_0_2px_rgba(163,230,53,0.08)]"
+                    required
+                >
+                    <% if (!editCard?.rarity) { %>
+                    <option value="" disabled selected>Pilih rarity</option>
+                    <% } else { %>
+                    <option value="" disabled>Pilih rarity</option>
+                    <% } %>
+
+                    <% rarities.forEach(function(r) { %>
+                    <% if (editCard?.rarity === r.value) { %>
+                    <option value="<%= r.value %>" selected><%= r.label %></option>
+                    <% } else { %>
+                    <option value="<%= r.value %>"><%= r.label %></option>
+                    <% } %>
+                    <% }); %>
+                </select>
+                <input
+                    class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-[#35b1e6] focus:shadow-[0_0_0_2px_rgba(163,230,53,0.08)] placeholder:text-[#3d4a5c]"
+                    name="power"
+                    type="number"
+                    placeholder="Power Kartu"
+                    value="<%= editCard ? editCard.power : '' %>"
+                    required
+                />
+                <input
+                    class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-[#35b1e6] focus:shadow-[0_0_0_2px_rgba(163,230,53,0.08)] placeholder:text-[#3d4a5c]"
+                    name="effect"
+                    placeholder="Efek Kartu"
+                    value="<%= editCard ? editCard.effect : '' %>"
+                    required
+                />
+                <div class="col-span-2 max-sm:col-span-1">
+                    <label class="block text-[0.8rem] text-text-muted font-techmono tracking-widest uppercase mb-5">
+                        // Sticker Image
+                    </label>
+                    <% if (editCard?.stickerPath) { %>
+                    <div class="mb-2 flex items-center gap-3">
+                        <img
+                            src="<%= editCard.stickerPath %>"
+                            alt="Current Sticker"
+                            class="w-16 h-16 object-contain rounded border border-border bg-[#141720]"
+                        />
+                        <span class="text-[0.8rem] text-text-muted font-techmono">gambar saat ini</span>
+                    </div>
+                    <% } %>
+                    <% if (editCard) { %>
+                    <input
+                        type="file"
+                        name="stickerPath"
+                        accept="image/*"
+                        class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-[#35b1e6] focus:shadow-[0_0_0_2px_rgba(163,230,53,0.08)] file:mr-3 file:py-1 file:px-3 file:rounded-sm file:border-0 file:bg-[#35b1e6] file:text-[#0a0c10] file:font-bold file:font-rajdhani file:cursor-pointer cursor-pointer"
+                    />
+                    <% } else { %>
+                    <input
+                        type="file"
+                        name="stickerPath"
+                        accept="image/*"
+                        required
+                        class="bg-[#141720] border border-border rounded-sm py-2.5 px-4 text-[#e8edf5] font-rajdhani text-[0.95rem] font-medium w-full outline-none transition-colors focus:border-[#35b1e6] focus:shadow-[0_0_0_2px_rgba(163,230,53,0.08)] file:mr-3 file:py-1 file:px-3 file:rounded-sm file:border-0 file:bg-[#35b1e6] file:text-[#0a0c10] file:font-bold file:font-rajdhani file:cursor-pointer cursor-pointer"
+                    />
+                    <% } %>
+                </div>
+
+                <div class="col-span-full flex gap-3 items-center max-sm:col-span-1">
+                    <button
+                        type="submit"
+                        class="bg-[#35b1e6] text-[#0a0c10] border-none py-2.5 px-6 rounded-sm font-rajdhani font-bold text-[0.95rem] tracking-[0.08em] uppercase cursor-pointer transition-all hover:bg-[#6ad2ff] hover:-translate-y-px"
+                    >
+                        <%= editCard ? 'Update' : 'Tambah' %>
+                    </button>
+                    <% if (editCard) { %>
+                    <a
+                        href="/cards"
+                        class="bg-transparent border border-border text-text-muted py-2.5 px-5 rounded-sm font-rajdhani text-[0.95rem] no-underline tracking-[0.05em] transition-colors hover:border-muted hover:text-text-secondary"
+                    >
+                        Batal
+                    </a>
+                    <% } %>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div
+        class="bg-[#0f1117] border border-border rounded overflow-x-auto relative before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-linear-to-r before:from-[#35b1e6] before:to-transparent"
+    >
+        <table class="w-full border-collapse min-w-160">
+            <thead class="bg-[#141720]">
+                <tr>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-[#35b1e6] font-normal border-b border-border"
+                    >
+                        #ID
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-[#35b1e6] font-normal border-b border-border"
+                    >
+                        Nama
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-[#35b1e6] font-normal border-b border-border"
+                    >
+                        Harga
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-[#35b1e6] font-normal border-b border-border"
+                    >
+                        Rarity
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-[#35b1e6] font-normal border-b border-border"
+                    >
+                        Power
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-[#35b1e6] font-normal border-b border-border"
+                    >
+                        Efek
+                    </th>
+                    <th
+                        class="py-3.5 px-5 text-left font-techmono text-[0.68rem] tracking-[0.14em] uppercase text-[#35b1e6] font-normal border-b border-border"
+                    >
+                        Aksi
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (!cards || cards.length === 0) { %>
+                <tr>
+                    <td colspan="7" class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium">
+                        <div
+                            class="text-center py-12 px-5 font-techmono text-[0.78rem] text-text-secondary tracking-[0.08em]"
+                        >
+                            // NO_ITEMS · belum ada item
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <% if (cards && cards.length > 0) { %> <% cards.forEach((item) => { %>
+                <tr class="border-b border-[#141720] transition-colors hover:bg-[rgba(53,218,230,0.03)]">
+                    <td class="py-3.5 px-5 font-medium font-techmono text-[0.78rem] text-text-secondary">
+                        <%= item.id %>
+                    </td>
+                    <td class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium"><%= item.name %></td>
+                    <td class="py-3.5 px-5 font-medium font-techmono text-[0.82rem] text-[#35b1e6]">
+                        <%= item.price %>
+                    </td>
+                    <td class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium">
+                        <span
+                            class="inline-block py-0.5 px-2 rounded-xs text-[0.72rem] font-techmono tracking-[0.06em] bg-[rgba(0,229,255,0.1)] border border-[rgba(0,229,255,0.25)] text-[#67e8f9]"
+                        >
+                            <%= item.rarity %>
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-5 font-medium font-techmono text-[0.8rem] text-text-muted">
+                        <%= item.power %>
+                    </td>
+                    <td class="py-3.5 px-5 font-medium font-techmono text-[0.8rem] text-text-muted">
+                        <%= item.effect %>
+                    </td>
+                    <td class="py-3.5 px-5 text-text-secondary text-[0.95rem] font-medium">
+                        <div class="flex gap-2 items-center">
+                            <a
+                                href="/cards/<%= item.id %>/edit"
+                                class="inline-block py-1 px-3 rounded-xs bg-[rgba(234,179,8,0.15)] border border-[rgba(234,179,8,0.3)] text-[#fbbf24] text-[0.8rem] font-techmono no-underline transition-colors hover:bg-[rgba(234,179,8,0.25)]"
+                            >
+                                Edit
+                            </a>
+                            <form
+                                method="POST"
+                                action="/cards/<%= item.id %>/delete"
+                                onsubmit="return confirm('Hapus item ini?');"
+                                class="m-0"
+                            >
+                                <button
+                                    type="submit"
+                                    class="inline-block py-1 px-3 rounded-xs bg-[rgba(239,68,68,0.12)] border border-[rgba(239,68,68,0.25)] text-button-accent text-[0.8rem] font-techmono cursor-pointer transition-colors hover:bg-[rgba(239,68,68,0.22)]"
+                                >
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</section>

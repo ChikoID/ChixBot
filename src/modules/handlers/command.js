@@ -19,7 +19,11 @@ module.exports = async (client) => {
         return;
     }
 
-    const loadCommands = (dir) => {
+    /**
+     * @param {string} dir
+     * @param {string|null} category
+     */
+    const loadCommands = (dir, category = null) => {
         const files = fs.readdirSync(dir);
 
         for (const file of files) {
@@ -27,7 +31,8 @@ module.exports = async (client) => {
             const stat = fs.statSync(filePath);
 
             if (stat.isDirectory()) {
-                loadCommands(filePath);
+                const newCategory = category || file;
+                loadCommands(filePath, newCategory);
             } else if (file.endsWith(".js")) {
                 try {
                     const command = require(filePath);
@@ -36,6 +41,8 @@ module.exports = async (client) => {
                         console.log(`Command ${file} tidak memiliki property 'name'`);
                         continue;
                     }
+
+                    command.category = category || "general";
 
                     client.commands.set(command.name, command);
                     uniqueCommands.add(command.name);
@@ -46,7 +53,9 @@ module.exports = async (client) => {
                         });
                     }
 
-                    console.log(`Loaded: ${command.name}${command.aliases ? ` (${command.aliases.join(", ")})` : ""}`);
+                    console.log(
+                        `Loaded: ${command.name} [${command.category}]${command.aliases ? ` (${command.aliases.join(", ")})` : ""}`,
+                    );
                 } catch (error) {
                     console.error(`Error loading command ${file}:`, error);
                 }

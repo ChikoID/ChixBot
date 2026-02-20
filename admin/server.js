@@ -42,9 +42,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", require("./routes/auth"));
+app.use("/cards", requireAuth, require("./routes/cards"));
 app.use("/users", requireAuth, require("./routes/users"));
 app.use("/items", requireAuth, require("./routes/items"));
 app.use("/items-limited", requireAuth, require("./routes/itemsLimited"));
 app.use("/inventory", requireAuth, require("./routes/inventory"));
+app.use("/assets", express.static(path.join(__dirname, "../assets")));
 
 app.listen(PORT, () => console.log(`Admin server jalan di http://localhost:${PORT}`));

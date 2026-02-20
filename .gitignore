@@ -13,4 +13,6 @@ node_modules
 .prettier*
 .vscode/*
 
-original.css
+original.css*
+
+assets*

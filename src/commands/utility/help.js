@@ -2,6 +2,7 @@ module.exports = {
     name: "help",
     description: "Menampilkan panduan dan daftar lengkap command yang bisa digunakan beserta fungsi singkatnya.",
     aliases: ["commands", "menu"],
+
     /**
      * @param {import("whatsapp-web.js").Message} message
      * @param {import("whatsapp-web.js").Client} client
@@ -15,24 +16,42 @@ module.exports = {
         const prefix = process.env.PREFIX || "!";
 
         const uniqueCommands = new Map();
-        for (const command of client.commands.values()) {
-            if (!command?.name) continue;
-            if (!uniqueCommands.has(command.name)) {
-                uniqueCommands.set(command.name, command);
+        for (const cmd of client.commands.values()) {
+            if (!cmd?.name) continue;
+            if (!uniqueCommands.has(cmd.name)) {
+                uniqueCommands.set(cmd.name, cmd);
             }
         }
 
-        const sortedCommands = Array.from(uniqueCommands.values()).sort((a, b) => a.name.localeCompare(b.name));
+        const categories = new Map();
 
-        const lines = ["📜 *Daftar Perintah ChixBot* 📜", ""];
+        for (const command of uniqueCommands.values()) {
+            const category = command.category || "other";
 
-        for (const command of sortedCommands) {
-            const desc = command.description || "Tanpa deskripsi";
-            lines.push(`> *${prefix}${command.name}* - ${desc}\n`);
+            if (!categories.has(category)) {
+                categories.set(category, []);
+            }
 
-            // if (Array.isArray(command.aliases) && command.aliases.length > 0) {
-            //     lines.push(`   _Alias_: ${command.aliases.map((alias) => `${prefix}${alias}`).join(", ")}`);
-            // }
+            categories.get(category).push(command);
+        }
+
+        const sortedCategories = Array.from(categories.keys()).sort((a, b) => a.localeCompare(b));
+
+        const lines = [];
+        lines.push("📜 *Daftar Perintah ChixBot* 📜");
+        lines.push("");
+
+        for (const category of sortedCategories) {
+            lines.push(`📂 *${category.toUpperCase()}*`);
+
+            const cmds = categories.get(category).sort((a, b) => a.name.localeCompare(b.name));
+
+            for (const cmd of cmds) {
+                const desc = cmd.description || "Tanpa deskripsi";
+                lines.push(`> *${prefix}${cmd.name}* - ${desc}`);
+            }
+
+            lines.push("");
         }
 
         await message.reply(lines.join("\n"));
