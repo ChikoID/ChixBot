@@ -11,8 +11,8 @@ node_modules
 *.log
 
 .prettier*
-.vscode/*
+.vscode*
 
-original.css*
+original.css
 
 assets*
