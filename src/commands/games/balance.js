@@ -1,4 +1,5 @@
 const { ensureUser } = require("../../shared/utility/ensureUser");
+const { formatNumber } = require("../../shared/utility/numberFormat");
 
 module.exports = {
     name: "balance",
@@ -14,6 +15,8 @@ module.exports = {
         const user = await ensureUser(message);
         if (!user) return;
 
-        await message.reply(`💰 Saldo kamu: ${user.chix} Chix!`);
+        const chix = formatNumber(user.chix, "full");
+
+        await message.reply(`💰 Saldo kamu: ${chix} Chix!`);
     },
 };

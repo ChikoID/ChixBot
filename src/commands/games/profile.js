@@ -1,5 +1,6 @@
 const Inventory = require("../../models/inventory");
 const { ensureUser } = require("../../shared/utility/ensureUser");
+const { formatNumber } = require("../../shared/utility/numberFormat");
 
 module.exports = {
     name: "profile",
@@ -20,7 +21,7 @@ module.exports = {
         const inventory = (await Inventory.getAllByUser(user.id)) || 0;
 
         const userName = user.name;
-        const userChix = user.chix;
+        const userChix = formatNumber(user.chix, "short");
         const userStorage = user.storage_cap;
         const filteredInventory = inventory.filter((inv) => inv.item_type === "items");
         const totalItems = filteredInventory.reduce((sum, inv) => sum + inv.quantity, 0);
